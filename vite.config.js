@@ -11,5 +11,6 @@ export default defineConfig({
   preview: {
     host: true,
     port: Number(process.env.PORT) || 4173,
+    allowedHosts: ['yaaro.fit', 'www.yaaro.fit'],
   },
 })
