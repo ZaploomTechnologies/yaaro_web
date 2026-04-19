@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "start": "vite preview",
+    "pm2:start": "pm2 start ecosystem.config.cjs",
     "lint": "eslint .",
     "preview": "vite preview"
   },

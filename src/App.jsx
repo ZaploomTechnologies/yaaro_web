@@ -11,6 +11,7 @@ import ProfilePage from './pages/ProfilePage';
 import WorkoutPage from './pages/WorkoutPage';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsPage from './pages/TermsPage';
+import DeleteAccountRequestPage from './pages/DeleteAccountRequestPage';
 
 function LandingPage() {
   return (
@@ -59,6 +60,7 @@ export default function App() {
       <Route path="/workout/:workoutId" element={<WorkoutPage />} />
       <Route path="/privacy-policy" element={<PrivacyPolicy />} />
       <Route path="/terms" element={<TermsPage />} />
+      <Route path="/delete-account-request" element={<DeleteAccountRequestPage />} />
     </Routes>
   );
 }
