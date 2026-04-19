@@ -9,6 +9,8 @@ import AppPreview from './sections/AppPreview';
 import CTASection from './sections/CTASection';
 import ProfilePage from './pages/ProfilePage';
 import WorkoutPage from './pages/WorkoutPage';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsPage from './pages/TermsPage';
 
 function LandingPage() {
   return (
@@ -55,6 +57,8 @@ export default function App() {
       <Route path="/" element={<LandingPage />} />
       <Route path="/user/:username" element={<ProfilePage />} />
       <Route path="/workout/:workoutId" element={<WorkoutPage />} />
+      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+      <Route path="/terms" element={<TermsPage />} />
     </Routes>
   );
 }

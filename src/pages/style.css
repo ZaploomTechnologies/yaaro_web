@@ -1,0 +1,66 @@
+/* Scoped to legal pages — avoids overriding the rest of the app */
+.legal-doc-page {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+  line-height: 1.6;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  background: #f7f9fc;
+  color: #333;
+}
+
+.legal-doc-page .container {
+  max-width: 900px;
+  margin: auto;
+  background: #fff;
+  padding: 30px;
+}
+
+.legal-doc-page h1,
+.legal-doc-page h2,
+.legal-doc-page h3 {
+  color: #111;
+}
+
+.legal-doc-page h1 {
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+}
+
+.legal-doc-page h2 {
+  margin-top: 30px;
+}
+
+.legal-doc-page ul {
+  padding-left: 20px;
+}
+
+.legal-doc-page .highlight {
+  padding: 10px;
+  margin: 15px 0;
+}
+
+.legal-doc-page .highlight--terms {
+  background: #fff7e6;
+  border-left: 4px solid #ff9800;
+}
+
+.legal-doc-page .highlight--privacy {
+  background: #f1f5ff;
+  border-left: 4px solid #4a6cf7;
+}
+
+.legal-doc-page .footer {
+  margin-top: 40px;
+  font-size: 14px;
+  color: #666;
+}
+
+.legal-doc-page .legal-doc-link {
+  color: #4a6cf7;
+  text-decoration: underline;
+}
+
+.legal-doc-page .legal-doc-link:hover {
+  opacity: 0.85;
+}
