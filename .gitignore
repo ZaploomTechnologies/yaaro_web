@@ -1,5 +1,5 @@
-# Logs
-logs
+# Logs / PM2 (ecosystem.config.cjs)
+logs/
 *.log
 npm-debug.log*
 yarn-debug.log*

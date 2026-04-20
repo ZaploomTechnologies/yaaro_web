@@ -6,6 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "prestart": "node -e \"require('fs').existsSync('dist/index.html')||process.exit(1)\" || npm run build",
+    "start": "vite preview",
+    "pm2:start": "pm2 start ecosystem.config.cjs",
     "lint": "eslint .",
     "preview": "vite preview"
   },

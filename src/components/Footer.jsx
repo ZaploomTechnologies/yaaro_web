@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 const FOOTER_LINKS = {
@@ -73,13 +74,29 @@ export default function Footer() {
               <h4 className="font-semibold text-surface-text text-sm mb-4">{category}</h4>
               <ul className="space-y-3">
                 {links.map((link) => (
-                  <li key={link.label}>
-                    <a
-                      href={link.href}
-                      className="text-surface-secondary text-sm hover:text-primary transition-colors duration-200"
-                    >
-                      {link.label}
-                    </a>
+                  <li key={link}>
+                    {link === 'Privacy Policy' ? (
+                      <Link
+                        to="/privacy-policy"
+                        className="text-surface-secondary text-sm hover:text-primary transition-colors duration-200"
+                      >
+                        {link}
+                      </Link>
+                    ) : link === 'Terms of Service' ? (
+                      <Link
+                        to="/terms"
+                        className="text-surface-secondary text-sm hover:text-primary transition-colors duration-200"
+                      >
+                        {link}
+                      </Link>
+                    ) : (
+                      <a
+                        href="#"
+                        className="text-surface-secondary text-sm hover:text-primary transition-colors duration-200"
+                      >
+                        {link}
+                      </a>
+                    )}
                   </li>
                 ))}
               </ul>
