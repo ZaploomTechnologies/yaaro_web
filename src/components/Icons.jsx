@@ -193,11 +193,44 @@ export function AppleIcon({ className }) {
 
 export function PlayStoreIcon({ className }) {
   return (
-    <Icon className={className} filled>
-      <path d="M3 20.5v-17c0-.83.94-1.3 1.6-.8l14 8.5c.6.37.6 1.23 0 1.6l-14 8.5c-.66.5-1.6.03-1.6-.8z" />
+    <Icon className={className} viewBox="0 0 512 512" stroke="none">
+      {/* Left Segment - Blue */}
+      <path
+        d="M78.6 30.6c-4 5.3-6.4 13.5-6.4 24v402.7c0 10.5 2.4 18.7 6.4 24l4.4 4 229.4-229.4v-13L83 26.6l-4.4 4z"
+        fill="#00BDFF"
+        stroke="#00BDFF"
+        strokeWidth="20"
+        strokeLinejoin="round"
+      />
+      {/* Right Segment - Yellow */}
+      <path
+        d="M410.3 234.3l-97.3-55.7V333.3l97.3-55.7c24.6-14 24.6-36.8 0-50.8z"
+        fill="#FFD600"
+        stroke="#FFD600"
+        strokeWidth="20"
+        strokeLinejoin="round"
+      />
+      {/* Bottom Segment - Red */}
+      <path
+        d="M78.6 485.4c4 5.3 12.3 8.8 21.6 3.5L313 333.3 83 485.4z"
+        fill="#FF5252"
+        stroke="#FF5252"
+        strokeWidth="20"
+        strokeLinejoin="round"
+      />
+      {/* Top Segment - Green */}
+      <path
+        d="M78.6 26.6L313 178.6 100.2 23.1c-9.3-5.3-17.6-1.8-21.6 3.5z"
+        fill="#00E676"
+        stroke="#00E676"
+        strokeWidth="20"
+        strokeLinejoin="round"
+      />
     </Icon>
   );
 }
+
+
 
 export function StarIcon({ className }) {
   return (

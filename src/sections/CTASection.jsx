@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { StarIcon, RocketIcon } from '../components/Icons';
+import { StarIcon, RocketIcon, PlayStoreIcon } from '../components/Icons';
 
 function AppStoreButton() {
   return (
@@ -28,26 +28,7 @@ function GooglePlayButton() {
       whileTap={{ scale: 0.97 }}
       className="flex items-center gap-3 bg-black border border-[#333] px-5 py-3.5 rounded-2xl min-w-44 shadow-lg hover:border-primary/40 transition-all duration-200"
     >
-      <svg width="22" height="24" viewBox="0 0 20 22" fill="none" className="flex-shrink-0">
-        <path d="M1.07.65C.67.87.4 1.3.4 1.85v18.3c0 .55.27.98.67 1.2l.1.06 10.25-10.25v-.24L1.17.59l-.1.06Z" fill="url(#cta-gp-a)" />
-        <path d="m14.83 14.57-3.41-3.42v-.24l3.41-3.42.08.04 4.04 2.3c1.15.65 1.15 1.72 0 2.38l-4.04 2.3-.08.06Z" fill="url(#cta-gp-b)" />
-        <path d="M14.91 14.51 11.42 11 1.07 21.35c.38.4.99.45 1.69.05l12.15-6.89" fill="url(#cta-gp-c)" />
-        <path d="M14.91 7.49 2.76.6C2.06.19 1.45.25 1.07.65L11.42 11l3.49-3.51Z" fill="url(#cta-gp-d)" />
-        <defs>
-          <linearGradient id="cta-gp-a" x1="10.64" y1="1.77" x2="-3.73" y2="16.14" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#00A0FF" /><stop offset="1" stopColor="#00F" stopOpacity="0" />
-          </linearGradient>
-          <linearGradient id="cta-gp-b" x1="20.3" y1="11" x2="9.76" y2="11" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#FFD900" /><stop offset="1" stopColor="#FF9100" />
-          </linearGradient>
-          <linearGradient id="cta-gp-c" x1="12.67" y1="12.83" x2="-2.83" y2="28.33" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#FF3A44" /><stop offset="1" stopColor="#C31162" />
-          </linearGradient>
-          <linearGradient id="cta-gp-d" x1="-1.07" y1="-3.82" x2="6.62" y2="3.87" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#32A071" /><stop offset="1" stopColor="#2DA771" stopOpacity="0" />
-          </linearGradient>
-        </defs>
-      </svg>
+      <PlayStoreIcon className="w-[22px] h-[24px]" />
       <div className="text-left">
         <p className="text-[10px] text-gray-400 leading-none">GET IT ON</p>
         <p className="text-sm font-bold text-white leading-tight">Google Play</p>

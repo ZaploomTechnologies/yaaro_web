@@ -74,27 +74,27 @@ export default function Footer() {
               <h4 className="font-semibold text-surface-text text-sm mb-4">{category}</h4>
               <ul className="space-y-3">
                 {links.map((link) => (
-                  <li key={link}>
-                    {link === 'Privacy Policy' ? (
+                  <li key={link.label}>
+                    {link.label === 'Privacy Policy' ? (
                       <Link
                         to="/privacy-policy"
                         className="text-surface-secondary text-sm hover:text-primary transition-colors duration-200"
                       >
-                        {link}
+                        {link.label}
                       </Link>
-                    ) : link === 'Terms of Service' ? (
+                    ) : link.label === 'Terms of Service' ? (
                       <Link
                         to="/terms"
                         className="text-surface-secondary text-sm hover:text-primary transition-colors duration-200"
                       >
-                        {link}
+                        {link.label}
                       </Link>
                     ) : (
                       <a
-                        href="#"
+                        href={link.href}
                         className="text-surface-secondary text-sm hover:text-primary transition-colors duration-200"
                       >
-                        {link}
+                        {link.label}
                       </a>
                     )}
                   </li>
