@@ -54,7 +54,7 @@ export default function App() {
     <Routes>
       <Route path="/" element={<LandingPage />} />
       <Route path="/user/:username" element={<ProfilePage />} />
-      <Route path="/workout/:workoutId" element={<WorkoutPage />} />
+      <Route path="/activities/:activityId" element={<WorkoutPage />} />
     </Routes>
   );
 }

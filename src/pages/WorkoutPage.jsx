@@ -288,7 +288,7 @@ function ProfileSidebar({ user }) {
 }
 
 export default function WorkoutPage() {
-  const { workoutId } = useParams();
+  const { activityId } = useParams();
   const workout = MOCK_WORKOUT;
   const { user } = workout;
 

@@ -1,12 +1,8 @@
-import { useState } from 'react';
 import { motion } from 'framer-motion';
 import ActivityCard from '../components/ActivityCard';
-import WorkoutModal from '../components/WorkoutModal';
 import { ACTIVITIES } from '../constants';
 
 export default function Activities() {
-  const [selectedActivity, setSelectedActivity] = useState(null);
-
   return (
     <section id="activities" className="py-24 relative" aria-label="Activities section">
       {/* Subtle background accent */}
@@ -34,13 +30,12 @@ export default function Activities() {
         </motion.div>
 
         {/* Activity Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {ACTIVITIES.map((activity, index) => (
             <ActivityCard
               key={activity.id}
               activity={activity}
               index={index}
-              onClick={() => setSelectedActivity(activity)}
             />
           ))}
         </div>
@@ -59,10 +54,6 @@ export default function Activities() {
         </motion.div>
       </div>
 
-      <WorkoutModal
-        activity={selectedActivity}
-        onClose={() => setSelectedActivity(null)}
-      />
     </section>
   );
 }

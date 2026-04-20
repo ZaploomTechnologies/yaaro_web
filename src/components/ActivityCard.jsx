@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { ANIMATED_ICONS } from './AnimatedIcons';
 import { ICONS } from './Icons';
 
-export default function ActivityCard({ activity, index, onClick }) {
+export default function ActivityCard({ activity, index }) {
   const IconComponent = ANIMATED_ICONS[activity.icon] ?? ICONS[activity.icon];
 
   return (
@@ -12,8 +12,7 @@ export default function ActivityCard({ activity, index, onClick }) {
       transition={{ duration: 0.5, delay: index * 0.1 }}
       viewport={{ once: true }}
       whileHover={{ scale: 1.03, y: -4 }}
-      onClick={onClick}
-      className="relative group overflow-hidden rounded-2xl cursor-pointer h-72"
+      className="relative group overflow-hidden rounded-2xl h-72"
     >
       {/* Background Image */}
       <div className="absolute inset-0">
@@ -49,15 +48,6 @@ export default function ActivityCard({ activity, index, onClick }) {
           <h3 className="text-xl font-semibold text-white mb-1">{activity.title}</h3>
           <p className="text-white/70 text-sm leading-relaxed">{activity.description}</p>
 
-          {/* Track button — appears on hover */}
-          <div className="mt-3 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
-            <span className="inline-flex items-center gap-1.5 text-primary text-sm font-semibold">
-              View Details
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
-            </span>
-          </div>
         </div>
       </div>
     </motion.div>

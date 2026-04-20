@@ -242,6 +242,25 @@ export function MoonIcon({ className }) {
   );
 }
 
+export function DanceIcon({ className }) {
+  return (
+    <Icon className={className}>
+      <path d="M12 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z" />
+      <path d="M8 8.5c0-.8.7-1.5 1.5-1.5H13l2 4-3 1v4l2 3h-2l-2-3v-4l-2-1z" />
+      <path d="M10 13l-2 3H6l2-4" />
+    </Icon>
+  );
+}
+
+export function YogaIcon({ className }) {
+  return (
+    <Icon className={className}>
+      <circle cx="12" cy="3" r="1.5" />
+      <path d="M12 6c-1.1 0-2 .9-2 2v3l-3 2 1 1.5 2.5-1.5V17l-2 3h2l1.5-2.5L13.5 20h2l-2-3v-4l2.5 1.5L17 13l-3-2V8c0-1.1-.9-2-2-2z" />
+    </Icon>
+  );
+}
+
 // Map from string key → component (used in constants data)
 export const ICONS = {
   run: RunIcon,
@@ -269,4 +288,6 @@ export const ICONS = {
   gps: GpsIcon,
   bell: BellIcon,
   moon: MoonIcon,
+  dance: DanceIcon,
+  yoga: YogaIcon,
 };

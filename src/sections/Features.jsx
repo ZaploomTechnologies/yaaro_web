@@ -273,9 +273,9 @@ const FEATURE_BULLETS = {
     'Create private challenges with friends',
   ],
   clubs: [
-    'Join local & interest-based clubs',
+    'Browse & join clubs by sport or interest',
     'Plan group runs, rides & workouts',
-    'Stay motivated with your tribe',
+    'Stay active and connected with your club',
   ],
 };
 
@@ -330,7 +330,7 @@ function FeatureRow({ feature, index }) {
   );
 
   return (
-    <div className={`grid grid-cols-1 items-center gap-10 lg:gap-12 ${isEven ? 'lg:grid-cols-[3fr_2fr]' : 'lg:grid-cols-[2fr_3fr]'}`}>
+    <div id={feature.id} className={`grid grid-cols-1 items-center gap-10 lg:gap-12 ${isEven ? 'lg:grid-cols-[3fr_2fr]' : 'lg:grid-cols-[2fr_3fr]'}`}>
       {isEven ? (
         <>
           {contentBlock}

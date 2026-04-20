@@ -1,6 +1,7 @@
 export const NAV_LINKS = [
   { label: 'Activities', href: '#activities' },
   { label: 'Features', href: '#features' },
+  { label: 'How It Works', href: '#how-it-works' },
   { label: 'Why Yaaro', href: '#why-yaaro' },
   { label: 'Download', href: '#download' },
 ];
@@ -21,7 +22,7 @@ export const ACTIVITIES = [
     description: 'Every step counts. Build healthy habits one walk at a time.',
     icon: 'walk',
     image: '/walking.jpg',
-    stats: '3.1 km • 42 min',
+    stats: '6,842 steps • 42 min',
     color: 'from-green-500/60',
   },
   {
@@ -39,8 +40,26 @@ export const ACTIVITIES = [
     description: 'Log sets, reps, and weight. Build strength progressively.',
     icon: 'workout',
     image: '/workout.jpg',
-    stats: '45 min • 320 cal',
+    stats: '85 kg • 4 sets',
     color: 'from-purple-500/60',
+  },
+  {
+    id: 5,
+    title: 'Dance',
+    description: 'Move to the beat. Track your sessions and burn calories with rhythm.',
+    icon: 'dance',
+    image: '/dance.jpg',
+    stats: '30 min • 280 cal',
+    color: 'from-pink-500/60',
+  },
+  {
+    id: 6,
+    title: 'Yoga',
+    description: 'Find your balance. Log mindful sessions and track flexibility gains.',
+    icon: 'yoga',
+    image: '/yoga.jpg',
+    stats: '40 min • 150 cal',
+    color: 'from-teal-500/60',
   },
 ];
 
@@ -66,15 +85,15 @@ export const FEATURES = [
     title: 'Push Your Limits',
     subtitle: 'Challenges',
     description: 'Join weekly and monthly challenges. Compete with friends, climb the leaderboard, win exclusive rewards.',
-    badge: 'Compete',
+    badge: 'Challenges',
     badgeColor: 'bg-orange-500/20 text-orange-400',
   },
   {
     id: 'clubs',
-    title: 'Find Your Tribe',
+    title: 'Join a Club',
     subtitle: 'Fitness Clubs',
-    description: 'Join community groups, plan group activities, and stay motivated together. Fitness is better with friends.',
-    badge: 'Community',
+    description: 'Discover and join clubs built around your interests. Connect with like-minded members, plan activities, and grow together.',
+    badge: 'Clubs',
     badgeColor: 'bg-purple-500/20 text-purple-400',
   },
 ];
