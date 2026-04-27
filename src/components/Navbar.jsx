@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { NAV_LINKS } from '../constants';
-import Button from './Button';
+
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -54,14 +54,6 @@ export default function Navbar() {
               </a>
             ))}
           </div>
-
-          {/* Desktop CTA */}
-          <div className="hidden md:block">
-            <Button variant="primary" size="md" href="#download">
-              Get Started
-            </Button>
-          </div>
-
           {/* Mobile menu button */}
           <button
             className="md:hidden flex flex-col gap-1.5 p-2 rounded-lg hover:bg-surface-card transition-colors"
@@ -105,11 +97,6 @@ export default function Navbar() {
                   {link.label}
                 </a>
               ))}
-              <div className="pt-2">
-                <Button variant="primary" size="md" className="w-full" href="#download">
-                  Get Started
-                </Button>
-              </div>
             </div>
           </motion.div>
         )}
