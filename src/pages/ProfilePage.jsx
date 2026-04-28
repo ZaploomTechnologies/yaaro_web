@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion';
 import { useParams, Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { ICONS } from '../components/Icons';
 
 // Mock data — replace with API call later
 const MOCK_PROFILE = {
@@ -28,13 +30,15 @@ function StatItem({ label, value }) {
 
 
 function AvatarPlaceholder({ name }) {
-  const initials = name
+  const safeName = typeof name === 'string' ? name : 'Y';
+  const initials = safeName
     .trim()
     .split(' ')
+    .filter(Boolean)
     .map((n) => n[0])
     .join('')
     .toUpperCase()
-    .slice(0, 2);
+    .slice(0, 2) || 'Y';
 
   return (
     <div className="w-full h-full bg-primary-low flex items-center justify-center">
@@ -45,15 +49,72 @@ function AvatarPlaceholder({ name }) {
 
 
 export default function ProfilePage() {
-  const { username } = useParams();
+  const { userId } = useParams();
+  const [profile, setProfile] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [imgError, setImgError] = useState(false);
 
-  // In the future, fetch profile by username from backend
-  const profile = MOCK_PROFILE;
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        setLoading(true);
+        const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:3100/api/frontend';
+        const response = await fetch(`${baseUrl}/users/${userId}`);
+        
+        if (!response.ok) {
+          throw new Error('Profile not found');
+        }
+        
+        const result = await response.json();
+        setProfile(result);
+      } catch (err) {
+        console.error('Error fetching profile:', err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (userId) {
+      fetchProfile();
+    }
+  }, [userId]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
+          <p className="text-surface-secondary text-sm animate-pulse">Loading profile...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !profile) {
+    return (
+      <div className="min-h-screen bg-black flex flex-col items-center justify-center p-6 text-center">
+        <div className="w-20 h-20 bg-red-500/10 rounded-full flex items-center justify-center mb-6">
+          <AlertIcon className="w-10 h-10 text-red-500" />
+        </div>
+        <h1 className="text-2xl font-bold text-white mb-2">Profile Not Found</h1>
+        <p className="text-surface-secondary mb-8 max-w-xs">
+          The user profile you're looking for might have been removed or the link is incorrect.
+        </p>
+        <Link to="/" className="bg-primary text-black font-bold px-8 py-3 rounded-full hover:scale-105 transition-transform">
+          Back to Home
+        </Link>
+      </div>
+    );
+  }
+
+  const locationStr = profile.city ? `${profile.city}, ${profile.state || ''}, ${profile.country || ''}`.replace(/, ,/g, ',').replace(/^, |, $/g, '') : null;
 
   return (
     <div className="min-h-screen bg-black flex flex-col">
       {/* Main Content */}
-      <main className="flex-1 flex flex-col px-4 pt-12 md:pt-6">
+      <main className="flex-1 flex flex-col px-4 pt-12 md:pt-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -61,54 +122,57 @@ export default function ProfilePage() {
           className="w-full max-w-xl mx-auto"
         >
           {/* Logo link at section level */}
-          <div className="mb-10">
+          <div className="mb-12">
             <Link to="/" className="inline-block hover:opacity-80 transition-opacity">
               <img src="/Yaaro-Logo.png" alt="Yaaro" width={84} />
             </Link>
           </div>
 
           {/* Name Display */}
-          <h1 className="text-3xl font-bold text-white mb-8 tracking-tight">
-            {profile.displayName}
-          </h1>
+          <div className="mb-10">
+             <h1 className="text-3xl md:text-4xl font-bold text-white tracking-tight">
+              {profile.fullName}
+            </h1>
+          </div>
 
           {/* Square Image + Stats Row */}
-          <div className="flex items-start gap-8 mb-8">
+          <div className="flex flex-col sm:flex-row items-start gap-8 mb-10">
             {/* Square Avatar */}
-            <div className="w-28 h-28 rounded-2xl overflow-hidden bg-surface-card shrink-0">
-              {profile.avatar ? (
+            <div className="w-28 h-28 rounded-3xl overflow-hidden bg-surface-card shrink-0 border border-white/5">
+              {profile.profileImage && !imgError ? (
                 <img
-                  src={profile.avatar}
-                  alt={profile.displayName}
+                  src={profile.profileImage}
+                  alt={profile.fullName}
                   className="w-full h-full object-cover"
+                  onError={() => setImgError(true)}
                 />
               ) : (
-                <AvatarPlaceholder name={profile.displayName} />
+                <AvatarPlaceholder name={profile.fullName} />
               )}
             </div>
 
             {/* Stats */}
             <div className="flex gap-10 pt-2">
-              <StatItem label="Activities" value={profile.activities} />
-              <StatItem label="Followers" value={profile.followers} />
-              <StatItem label="Following" value={profile.following} />
+              <StatItem label="Activities" value={profile.activityCount || 0} />
+              <StatItem label="Followers" value={profile.followers || 0} />
+              <StatItem label="Following" value={profile.following || 0} />
             </div>
           </div>
 
           {/* Location & Bio */}
           <div className="space-y-4 mb-10">
-            {profile.location && (
+            {locationStr && (
               <div className="flex items-center gap-2 text-surface-secondary">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-gray-500">
                   <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
                   <circle cx="12" cy="9" r="2.5"/>
                 </svg>
-                <span className="text-base text-gray-400">{profile.location}</span>
+                <span className="text-base text-gray-400">{locationStr}</span>
               </div>
             )}
-            {profile.description && (
+            {profile.bio && (
               <p className="text-base text-gray-300 leading-relaxed max-w-sm">
-                {profile.description}
+                {profile.bio}
               </p>
             )}
           </div>
@@ -116,10 +180,10 @@ export default function ProfilePage() {
           {/* Download CTA - Moved to bottom area */}
           <div className="bg-surface-card/40 backdrop-blur-sm rounded-3xl px-6 py-8 border border-white/5 text-center space-y-5">
             <h2 className="text-xl font-bold text-gradient leading-tight">
-              Explore more of {profile.username}&apos;s workouts!
+              Explore more of {profile.userName}&apos;s workouts!
             </h2>
             <p className="text-sm text-surface-secondary leading-relaxed max-w-xs mx-auto">
-              To view {profile.username}&apos;s full profile and track your journey, download Yaaro for free.
+              To view {profile.userName}&apos;s full profile and track your journey, download Yaaro for free.
             </p>
 
 

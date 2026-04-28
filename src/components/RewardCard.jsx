@@ -12,17 +12,15 @@ export default function RewardCard({ reward, index }) {
       transition={{ duration: 0.4, delay: index * 0.1 }}
       viewport={{ once: true }}
       whileHover={!isLocked ? { y: -4 } : {}}
-      className={`gradient-border p-5 rounded-2xl relative overflow-hidden transition-all duration-300 ${
-        isLocked ? 'opacity-60 grayscale' : 'hover:shadow-card-hover'
-      }`}
+      className={`gradient-border p-5 rounded-2xl relative overflow-hidden transition-all duration-300 ${isLocked ? 'opacity-60 grayscale' : 'hover:shadow-card-hover'
+        }`}
     >
       {/* Status Badge */}
       <div
-        className={`absolute top-3 right-3 text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1 ${
-          isLocked
+        className={`absolute top-3 right-3 text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1 ${isLocked
             ? 'bg-surface-secondary/20 text-surface-secondary border border-border'
             : 'bg-primary text-primary-lowest'
-        }`}
+          }`}
       >
         {isLocked ? (
           <>
@@ -60,11 +58,10 @@ export default function RewardCard({ reward, index }) {
           <span className="text-surface-secondary text-xs">pts</span>
         </div>
         <span
-          className={`text-xs font-semibold px-2 py-0.5 rounded-full ${
-            isLocked
+          className={`text-xs font-semibold px-2 py-0.5 rounded-full ${isLocked
               ? 'bg-surface-secondary/10 text-surface-secondary'
               : 'bg-primary/15 text-primary'
-          }`}
+            }`}
         >
           {reward.discount}
         </span>

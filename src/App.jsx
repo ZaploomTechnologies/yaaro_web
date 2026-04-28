@@ -9,9 +9,11 @@ import AppPreview from './sections/AppPreview';
 import CTASection from './sections/CTASection';
 import ProfilePage from './pages/ProfilePage';
 import WorkoutPage from './pages/WorkoutPage';
+import ClubPage from './pages/ClubPage';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsPage from './pages/TermsPage';
 import DeleteAccountRequestPage from './pages/DeleteAccountRequestPage';
+import ScrollToTop from './components/ScrollToTop';
 
 function LandingPage() {
   return (
@@ -54,13 +56,17 @@ function LandingPage() {
 
 export default function App() {
   return (
-    <Routes>
-      <Route path="/" element={<LandingPage />} />
-      <Route path="/user/:username" element={<ProfilePage />} />
-      <Route path="/activities/:activityId" element={<WorkoutPage />} />
-      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-      <Route path="/terms" element={<TermsPage />} />
-      <Route path="/delete-account-request" element={<DeleteAccountRequestPage />} />
-    </Routes>
+    <>
+      <ScrollToTop />
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/users/:userId" element={<ProfilePage />} />
+        <Route path="/activities/:activityId" element={<WorkoutPage />} />
+        <Route path="/clubs/:clubId" element={<ClubPage />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/terms" element={<TermsPage />} />
+        <Route path="/delete-account-request" element={<DeleteAccountRequestPage />} />
+      </Routes>
+    </>
   );
 }

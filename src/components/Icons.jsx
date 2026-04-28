@@ -19,6 +19,19 @@ export function RunIcon({ className }) {
   );
 }
 
+export function RunnerLightningIcon({ className }) {
+  return (
+    <Icon className={className} strokeWidth={2.5}>
+      {/* Head */}
+      <circle cx="15" cy="4" r="1.5" fill="currentColor" stroke="none" />
+      {/* Runner body silhouette */}
+      <path d="M12 8l2 2 2-4M10 20l2-4 2 2 3-7M16 11l-3-2-4 1-2 3" />
+      {/* Lightning bolt / Pulse effect below */}
+      <path d="M7 18l3 2 2-3 4 2" stroke="currentColor" fill="none" />
+    </Icon>
+  );
+}
+
 export function WalkIcon({ className }) {
   return (
     <Icon className={className}>
@@ -294,6 +307,16 @@ export function YogaIcon({ className }) {
   );
 }
 
+export function AlertIcon({ className }) {
+  return (
+    <Icon className={className}>
+      <circle cx="12" cy="12" r="10" />
+      <line x1="12" y1="8" x2="12" y2="12" />
+      <line x1="12" y1="16" x2="12.01" y2="16" />
+    </Icon>
+  );
+}
+
 // Map from string key → component (used in constants data)
 export const ICONS = {
   run: RunIcon,
@@ -323,4 +346,6 @@ export const ICONS = {
   moon: MoonIcon,
   dance: DanceIcon,
   yoga: YogaIcon,
+  runnerLightning: RunnerLightningIcon,
+  alert: AlertIcon,
 };

@@ -1,84 +1,40 @@
 import { motion } from 'framer-motion';
-import { useParams } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import { ICONS } from '../components/Icons';
 
-// Mock data — replace with API call later
-const MOCK_WORKOUT = {
-  user: {
-    username: 'kapil',
-    displayName: 'Kapil Ramkhiladi Singh',
-    avatar: null,
-    activities: 453,
-    followers: 757,
-    following: 1154,
-  },
-  title: 'Test ttt',
-  description: 'Hhgguuc jjvivgig biggivu bibibih',
-  createdAt: 'Mar 18 at 4:38PM',
-  location: 'Azamgarh - Uttar Pradesh',
-  duration: '23min',
-  volume: '1,119kg',
-  setsCount: 8,
-  muscleGroups: [
-    { label: 'Back', percentage: 41 },
-    { label: 'Shoulders', percentage: 6 },
-    { label: 'Other', percentage: 53 },
-  ],
-  exercises: [
-    {
-      id: 1,
-      name: 'Back Extension (Hyperextension)',
-      supersetColor: null,
-      sets: [
-        { type: 'working', number: 1, reps: '6' },
-        { type: 'working', number: 2, reps: '5' },
-      ],
-      columns: ['SET', 'REPS'],
-    },
-    {
-      id: 2,
-      name: 'Back Extension (Machine)',
-      supersetColor: null,
-      sets: [
-        { type: 'working', number: 1, weight: '60kg', reps: '3' },
-        { type: 'working', number: 2, weight: '45kg', reps: '5' },
-      ],
-      columns: ['SET', 'KG', 'REPS'],
-    },
-    {
-      id: 3,
-      name: 'Band Pullaparts',
-      supersetColor: null,
-      sets: [
-        { type: 'working', number: 1, reps: '6' },
-      ],
-      columns: ['SET', 'REPS'],
-    },
-    {
-      id: 4,
-      name: 'Ball Slams',
-      supersetColor: null,
-      sets: [
-        { type: 'working', number: 1, weight: '10kg', reps: '8' },
-      ],
-      columns: ['SET', 'KG', 'REPS'],
-    },
-  ],
+const formatDuration = (seconds) => {
+  if (!seconds) return '0min';
+  const mins = Math.floor(seconds / 60);
+  if (mins < 60) return `${mins}min`;
+  const hrs = Math.floor(mins / 60);
+  const remainingMins = mins % 60;
+  return `${hrs}h ${remainingMins}m`;
 };
 
-const SUPERSET_COLORS = {
-  purple: { badge: 'bg-purple-500/20 text-purple-400 border border-purple-500/30', bar: 'bg-purple-500' },
-  green: { badge: 'bg-green-500/20 text-green-400 border border-green-500/30', bar: 'bg-green-500' },
-  red: { badge: 'bg-red-500/20 text-red-400 border border-red-500/30', bar: 'bg-red-500' },
-  yellow: { badge: 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30', bar: 'bg-yellow-500' },
+const formatDate = (dateStr) => {
+  if (!dateStr) return '';
+  const date = new Date(dateStr);
+  return date.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true
+  }).replace(',', ' at');
 };
 
 function AvatarPlaceholder({ name, size = 'md' }) {
-  const initials = name
+  const safeName = typeof name === 'string' ? name : 'Y';
+  const initials = safeName
+    ?.trim()
     .split(' ')
+    .filter(Boolean)
     .map((n) => n[0])
     .join('')
     .toUpperCase()
-    .slice(0, 2);
+    .slice(0, 2) || 'Y';
+    
   const sizeClass = size === 'sm' ? 'w-12 h-12 text-base' : 'w-14 h-14 text-lg';
   return (
     <div className={`${sizeClass} rounded-xl bg-primary-low flex items-center justify-center shrink-0`}>
@@ -97,22 +53,22 @@ function SetRow({ set, index, colCount }) {
       style={{ gridTemplateColumns: `repeat(${colCount}, minmax(0, 1fr))` }}
     >
       <div className="py-3 px-4 text-center text-sm font-semibold text-surface-secondary">
-        {set.type === 'warmup' ? 'W' : set.number}
+        {set.setNumber}
       </div>
-      {set.weight && (
+      {set.weight !== undefined && (
         <div className="py-3 px-4 text-center text-sm font-bold text-surface-text">
-          {set.weight.replace('lbs', '').replace('kg', '')}
+          {set.weight}
         </div>
       )}
       <div className="py-3 px-4 text-center text-sm font-semibold text-surface-text">
-        {(set.reps || set.detail).replace(' reps', '')}
+        {set.reps}
       </div>
     </div>
   );
 }
 
 function MuscleGroupsCard({ groups }) {
-  if (!groups) return null;
+  if (!groups || groups.length === 0) return null;
 
   return (
     <div className="bg-surface-card rounded-2xl border border-border px-5 py-4 mb-6">
@@ -142,32 +98,23 @@ function MuscleGroupsCard({ groups }) {
 }
 
 function ExerciseBlock({ exercise }) {
-  const superset = exercise.supersetColor ? SUPERSET_COLORS[exercise.supersetColor] : null;
-
-  // Determine headers based on columns
-  const headers = exercise.columns;
+  const headers = exercise.sets[0]?.weight !== undefined ? ['SET', 'KG', 'REPS'] : ['SET', 'REPS'];
   const colCount = headers.length;
 
   return (
     <div className="mb-10 last:mb-0">
       {/* Exercise header */}
       <div className="flex items-center gap-4 mb-5">
-        {/* Thumbnail - placeholder image */}
         <div className="w-14 h-14 rounded-xl overflow-hidden bg-surface-bg border border-border/50 shrink-0 flex items-center justify-center">
           <img 
-            src={`https://api.dicebear.com/7.x/shapes/svg?seed=${exercise.name}&backgroundColor=333333`} 
-            alt={exercise.name}
+            src={`https://api.dicebear.com/7.x/shapes/svg?seed=${exercise.exerciseName}&backgroundColor=333333`} 
+            alt={exercise.exerciseName}
             className="w-full h-full object-cover"
           />
         </div>
         <div>
-          {superset && (
-            <span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider mb-1.5 ${superset.badge}`}>
-              Superset
-            </span>
-          )}
           <h3 className="text-lg font-bold text-white tracking-tight border-b-2 border-white/90 inline-block pb-0.5">
-            {exercise.name}
+            {exercise.exerciseName}
           </h3>
         </div>
       </div>
@@ -181,7 +128,7 @@ function ExerciseBlock({ exercise }) {
         >
           {headers.map((header) => (
             <div key={header} className="py-2.5 px-4 text-center text-[10px] font-bold text-surface-secondary uppercase tracking-widest">
-              {header.includes('WEIGHT') ? (MOCK_WORKOUT.volume.includes('kg') ? 'KG' : 'LBS') : header}
+              {header}
             </div>
           ))}
         </div>
@@ -215,9 +162,9 @@ function ProfileSidebar({ user }) {
       {/* Stats */}
       <div className="flex items-center justify-between text-center">
         {[
-          { label: 'Activities', value: user.activities },
-          { label: 'Followers', value: user.followers },
-          { label: 'Following', value: user.following },
+          { label: 'Activities', value: user.activityCount || 0 },
+          { label: 'Followers', value: user.followers || 0 },
+          { label: 'Following', value: user.following || 0 },
         ].map(({ label, value }, i, arr) => (
           <div key={label} className="flex items-center gap-4">
             <div className="flex flex-col items-center">
@@ -231,11 +178,10 @@ function ProfileSidebar({ user }) {
 
       {/* Download CTA */}
       <p className="text-xs text-surface-secondary leading-relaxed">
-        To follow <span className="text-surface-text font-medium">{user.username}</span> and track your own workouts, download Yaaro for free.
+        To follow <span className="text-surface-text font-medium">{user.userName}</span> and track your own workouts, download Yaaro for free.
       </p>
 
       <div className="flex flex-col gap-2">
-        {/* App Store */}
         <motion.a
           href="#"
           whileTap={{ scale: 0.97 }}
@@ -250,7 +196,6 @@ function ProfileSidebar({ user }) {
           </div>
         </motion.a>
 
-        {/* Google Play */}
         <motion.a
           href="#"
           whileTap={{ scale: 0.97 }}
@@ -282,37 +227,128 @@ function ProfileSidebar({ user }) {
           </div>
         </motion.a>
       </div>
-
     </div>
   );
 }
 
+export { formatDate };
+
 export default function WorkoutPage() {
   const { activityId } = useParams();
-  const workout = MOCK_WORKOUT;
+  const [workout, setWorkout] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchWorkout = async () => {
+      try {
+        setLoading(true);
+        const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:3100/api/frontend';
+        
+        const response = await fetch(`${baseUrl}/activities/${activityId}`);
+        if (!response.ok) throw new Error('Activity not found');
+        const feedData = await response.json();
+        
+        const statsResponse = await fetch(`${baseUrl}/activities/${activityId}/detail`);
+        const statsData = await statsResponse.json();
+
+        const userResponse = await fetch(`${baseUrl}/users/${feedData.userId}`);
+        const userData = await userResponse.json();
+
+        const totalSets = feedData.exercises.reduce((acc, ex) => acc + ex.sets.length, 0);
+
+        const muscleGroups = statsData.exercise?.exercises?.reduce((acc, ex) => {
+          if (!ex.muscleGroup) return acc;
+          const existing = acc.find(g => g.label === ex.muscleGroup);
+          const sets = ex.set?.length || 0;
+          if (existing) {
+            existing.sets += sets;
+          } else {
+            acc.push({ label: ex.muscleGroup, sets });
+          }
+          return acc;
+        }, []) || [];
+
+        const totalGroupSets = muscleGroups.reduce((acc, g) => acc + g.sets, 0);
+        const processedGroups = muscleGroups.map(g => ({
+          label: g.label,
+          percentage: totalGroupSets > 0 ? Math.round((g.sets / totalGroupSets) * 100) : 0
+        })).sort((a, b) => b.percentage - a.percentage);
+
+        setWorkout({
+          ...feedData,
+          user: {
+            ...userData,
+            displayName: userData.fullName || feedData.userName,
+            userName: userData.userName || feedData.userName,
+            avatar: userData.profileImage || feedData.userAvatar
+          },
+          volume: statsData.exercise?.volumeKg ? `${Math.round(statsData.exercise.volumeKg)}kg` : '0kg',
+          duration: formatDuration(statsData.exercise?.timeSeconds || statsData.cardio?.timeSeconds),
+          setsCount: totalSets,
+          muscleGroups: processedGroups,
+          location: userData.city ? `${userData.city}, ${userData.state}` : 'Gym'
+        });
+      } catch (err) {
+        console.error('Error fetching workout:', err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (activityId) {
+      fetchWorkout();
+    }
+  }, [activityId]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
+          <p className="text-surface-secondary text-sm animate-pulse">Loading activity...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !workout) {
+    return (
+      <div className="min-h-screen bg-black flex flex-col items-center justify-center p-6 text-center">
+        <div className="w-20 h-20 bg-red-500/10 rounded-full flex items-center justify-center mb-6">
+          <ICONS.alert className="w-10 h-10 text-red-500" />
+        </div>
+        <h1 className="text-2xl font-bold text-white mb-2">Activity Not Found</h1>
+        <p className="text-surface-secondary mb-8 max-w-xs">
+          The activity you&apos;re looking for might have been removed or is private.
+        </p>
+        <Link to="/" className="bg-primary text-black font-bold px-8 py-3 rounded-full hover:scale-105 transition-transform">
+          Back to Home
+        </Link>
+      </div>
+    );
+  }
+
   const { user } = workout;
 
   return (
     <div className="min-h-screen bg-surface-bg flex flex-col">
       <main className="flex-1 max-w-5xl mx-auto w-full px-4 py-8">
-        {/* Logo link consistent with Profile Page */}
         <div className="mb-10">
-          <a href="/" className="inline-block hover:opacity-80 transition-opacity">
+          <Link to="/" className="inline-block hover:opacity-80 transition-opacity">
             <img src="/Yaaro-Logo.png" alt="Yaaro" width={84} />
-          </a>
+          </Link>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-6 items-start">
-        {/* Left — workout content */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45, ease: 'easeOut' }}
           className="flex-1 w-full"
         >
-          {/* Workout header */}
           <div className="bg-surface-card rounded-2xl border border-border px-5 py-4 mb-6">
-            {/* User row */}
             <div className="flex items-start gap-3 mb-4">
               {user.avatar ? (
                 <img src={user.avatar} alt={user.displayName} className="w-12 h-12 rounded-xl object-cover" />
@@ -328,21 +364,19 @@ export default function WorkoutPage() {
                     <path d="M14 20l6-6" />
                   </svg>
                   <span className="text-xs font-medium tracking-tight">
-                    {workout.createdAt} <span className="mx-1">•</span> {workout.location}
+                    {formatDate(workout.createdAt)} <span className="mx-1">•</span> {workout.location}
                   </span>
                 </div>
               </div>
             </div>
 
-            {/* Title & Description */}
             <div className="mb-6">
-              <h1 className="text-xl font-bold text-surface-text mb-1.5 tracking-tight">{workout.title}</h1>
+              <h1 className="text-xl font-bold text-surface-text mb-1.5 tracking-tight">{workout.activityType} Workout</h1>
               {workout.description && (
                 <p className="text-sm text-surface-secondary leading-relaxed">{workout.description}</p>
               )}
             </div>
 
-            {/* Meta Stats Grid */}
             <div className="grid grid-cols-3 gap-4 border-t border-border/40 pt-4">
               <div>
                 <p className="text-[10px] text-surface-secondary font-semibold mb-0.5 opacity-70 uppercase tracking-wider">Time</p>
@@ -361,15 +395,13 @@ export default function WorkoutPage() {
 
           <MuscleGroupsCard groups={workout.muscleGroups} />
 
-          {/* Exercises */}
           <div className="bg-surface-card rounded-2xl border border-border p-5">
-            {workout.exercises.map((exercise) => (
-              <ExerciseBlock key={exercise.id} exercise={exercise} />
+            {workout.exercises.map((exercise, idx) => (
+              <ExerciseBlock key={idx} exercise={exercise} />
             ))}
           </div>
         </motion.div>
 
-        {/* Right — sticky profile sidebar */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

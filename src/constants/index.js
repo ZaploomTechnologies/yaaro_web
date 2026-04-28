@@ -1,8 +1,8 @@
 export const NAV_LINKS = [
   { label: 'Activities', href: '#activities' },
   { label: 'Features', href: '#features' },
-  { label: 'How It Works', href: '#how-it-works' },
   { label: 'Why Yaaro', href: '#why-yaaro' },
+  { label: 'How It Works', href: '#how-it-works' },
   { label: 'Download', href: '#download' },
 ];
 
