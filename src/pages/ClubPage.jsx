@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { ICONS } from '../components/Icons';
 
 import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 
 export default function ClubPage() {
   const { clubId } = useParams();
@@ -70,6 +71,24 @@ export default function ClubPage() {
 
   return (
     <div className="min-h-screen bg-black flex flex-col">
+      <Helmet>
+        <title>{club.title} | Yaaro Clubs</title>
+        <meta name="description" content={club.description || `Join ${club.title} on Yaaro - The fitness app that rewards your hustle.`} />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={`${club.title} | Yaaro Clubs`} />
+        <meta property="og:description" content={club.description || `Join ${club.title} on Yaaro.`} />
+        <meta property="og:image" content={bannerImage} />
+        <meta property="og:url" content={window.location.href} />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`${club.title} | Yaaro Clubs`} />
+        <meta name="twitter:description" content={club.description || `Join ${club.title} on Yaaro.`} />
+        <meta name="twitter:image" content={bannerImage} />
+      </Helmet>
+
       {/* Banner Section Wrapper - No overflow-hidden here so logo can peak out */}
       <div className="relative w-full h-80 md:h-[420px]">
         <div className="absolute inset-0 overflow-hidden">

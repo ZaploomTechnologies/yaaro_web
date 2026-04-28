@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { useParams, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { ICONS } from '../components/Icons';
 
 // Mock data — replace with API call later
@@ -113,6 +114,24 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-screen bg-black flex flex-col">
+      <Helmet>
+        <title>{profile.fullName} (@{profile.userName}) | Yaaro Profile</title>
+        <meta name="description" content={profile.bio || `Check out ${profile.fullName}'s fitness journey on Yaaro.`} />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="profile" />
+        <meta property="og:title" content={`${profile.fullName} (@${profile.userName}) | Yaaro`} />
+        <meta property="og:description" content={profile.bio || `Check out ${profile.fullName}'s fitness journey on Yaaro.`} />
+        <meta property="og:image" content={profile.profileImage || '/Yaaro-Icon.png'} />
+        <meta property="og:url" content={window.location.href} />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content={`${profile.fullName} (@${profile.userName}) | Yaaro`} />
+        <meta name="twitter:description" content={profile.bio || `Check out ${profile.fullName}'s fitness journey on Yaaro.`} />
+        <meta name="twitter:image" content={profile.profileImage || '/Yaaro-Icon.png'} />
+      </Helmet>
+
       {/* Main Content */}
       <main className="flex-1 flex flex-col px-4 pt-12 md:pt-16">
         <motion.div

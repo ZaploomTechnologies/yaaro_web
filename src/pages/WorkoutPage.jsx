@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useParams, Link } from 'react-router-dom';
 import { ICONS } from '../components/Icons';
 
@@ -334,6 +335,24 @@ export default function WorkoutPage() {
 
   return (
     <div className="min-h-screen bg-surface-bg flex flex-col">
+      <Helmet>
+        <title>{workout.activityType} Workout by {workout.user.displayName} | Yaaro</title>
+        <meta name="description" content={workout.description || `Check out this ${workout.activityType} workout on Yaaro. Duration: ${workout.duration}, Volume: ${workout.volume}.`} />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content={`${workout.activityType} Workout by ${workout.user.displayName} | Yaaro`} />
+        <meta property="og:description" content={workout.description || `Check out this ${workout.activityType} workout on Yaaro.`} />
+        <meta property="og:image" content={workout.media?.[0] || workout.user.avatar || '/Yaaro-Icon.png'} />
+        <meta property="og:url" content={window.location.href} />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`${workout.activityType} Workout by ${workout.user.displayName} | Yaaro`} />
+        <meta name="twitter:description" content={workout.description || `Check out this ${workout.activityType} workout on Yaaro.`} />
+        <meta name="twitter:image" content={workout.media?.[0] || workout.user.avatar || '/Yaaro-Icon.png'} />
+      </Helmet>
+
       <main className="flex-1 max-w-5xl mx-auto w-full px-4 py-8">
         <div className="mb-10">
           <Link to="/" className="inline-block hover:opacity-80 transition-opacity">
