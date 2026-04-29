@@ -17,11 +17,11 @@ export default function ClubPage() {
         setLoading(true);
         const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:3100/api/frontend';
         const response = await fetch(`${baseUrl}/clubs/${clubId}`);
-        
+
         if (!response.ok) {
           throw new Error('Club not found');
         }
-        
+
         const result = await response.json();
         setClub(result);
       } catch (err) {
@@ -72,19 +72,19 @@ export default function ClubPage() {
   return (
     <div className="min-h-screen bg-black flex flex-col">
       <Helmet>
-        <title>{club.title} | Yaaro Clubs</title>
+        <title>{club.title} | {club.location.city || club.location.state || club.location.country}</title>
         <meta name="description" content={club.description || `Join ${club.title} on Yaaro - The fitness app that rewards your hustle.`} />
-        
+
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
-        <meta property="og:title" content={`${club.title} | Yaaro Clubs`} />
+        <meta property="og:title" content={`${club.title} | ${club.location.city || club.location.state || club.location.country}`} />
         <meta property="og:description" content={club.description || `Join ${club.title} on Yaaro.`} />
         <meta property="og:image" content={bannerImage} />
         <meta property="og:url" content={window.location.href} />
 
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={`${club.title} | Yaaro Clubs`} />
+        <meta name="twitter:title" content={`${club.title} | ${club.location.city || club.location.state || club.location.country}`} />
         <meta name="twitter:description" content={club.description || `Join ${club.title} on Yaaro.`} />
         <meta name="twitter:image" content={bannerImage} />
       </Helmet>
@@ -92,18 +92,18 @@ export default function ClubPage() {
       {/* Banner Section Wrapper - No overflow-hidden here so logo can peak out */}
       <div className="relative w-full h-80 md:h-[420px]">
         <div className="absolute inset-0 overflow-hidden">
-          <img 
-            src={bannerImage} 
-            alt={club.title} 
+          <img
+            src={bannerImage}
+            alt={club.title}
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
         </div>
-        
+
         {/* Logo - Positioned at bottom left, overlapping. Now inside a centered container to match content alignment. */}
         <div className="absolute -bottom-14 inset-x-0 z-10 pointer-events-none">
           <div className="max-w-4xl mx-auto px-6">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: 0.2 }}
