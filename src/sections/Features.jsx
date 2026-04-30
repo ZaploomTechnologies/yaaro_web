@@ -2,23 +2,74 @@ import { motion } from 'framer-motion';
 import { ICONS, TrophyIcon } from '../components/Icons';
 import { FEATURES, REWARDS_POINTS, REWARD_ITEMS, CHALLENGES, CLUBS, FEED_POSTS } from '../constants';
 
-function PhoneMockup({ children }) {
+const TAB_ACTIVE_MAP = {
+  feeds: 'Feed',
+  rewards: 'Rewards',
+  challenges: 'Social',
+  clubs: 'Social',
+};
+
+function PhoneMockup({ children, activeTab = 'Feed' }) {
+  const tabs = [
+    {
+      id: 'Feed',
+      label: 'Feed',
+      icon: (
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round">
+          <path d="M4 6h16M4 10h16M4 14h10" />
+        </svg>
+      ),
+    },
+    {
+      id: 'Social',
+      label: 'Social',
+      icon: (
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" />
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+        </svg>
+      ),
+    },
+    {
+      id: 'Rewards',
+      label: 'Rewards',
+      icon: (
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+          <path d="M6 9H3.5a2 2 0 0 0 0 4H6M18 9h2.5a2 2 0 0 1 0 4H18M4 3h16v7a8 8 0 0 1-16 0V3zM12 21v-5M8 21h8" />
+        </svg>
+      ),
+    },
+    {
+      id: 'Profile',
+      label: 'Profile',
+      icon: (
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" />
+        </svg>
+      ),
+    },
+  ];
+
+  // Split tabs around the center FAB
+  const leftTabs = tabs.slice(0, 2);
+  const rightTabs = tabs.slice(2);
+
   return (
-    <div className="relative " style={{ width: 260 }}>
+    <div className="relative" style={{ width: 260 }}>
       {/* Phone outer frame */}
-      <div className="relative bg-gray-900 rounded-[2.5rem] p-2 shadow-2xl ring-1 ring-white/10">
+      <div className="relative bg-[#212121] rounded-[2.5rem] p-[10px] shadow-2xl ring-1 ring-white/10">
         {/* Notch */}
-        <div className="absolute top-3.5 left-1/2 -translate-x-1/2 w-20 h-5 bg-gray-900 rounded-full z-10 flex items-center justify-center gap-1.5">
-          <div className="w-2 h-2 rounded-full bg-gray-800" />
-          <div className="w-1 h-1 rounded-full bg-gray-700" />
+        <div className="absolute top-[14px] left-1/2 -translate-x-1/2 w-[72px] h-[22px] bg-[#212121] rounded-full z-10 flex items-center justify-center gap-1.5">
+          <div className="w-2 h-2 rounded-full bg-[#1a1a1a]" />
+          <div className="w-1.5 h-1.5 rounded-full bg-[#1a1a1a]" />
         </div>
 
         {/* Screen */}
-        <div className="bg-[#0f0f0f] rounded-[2rem] overflow-hidden" style={{ height: 520 }}>
+        <div className="bg-[#0f0f0f] rounded-[2rem] overflow-hidden flex flex-col" style={{ height: 520 }}>
           {/* Status bar */}
-          <div className="flex items-center justify-between px-5 pt-8 pb-2">
+          <div className="flex items-center justify-between px-5 pt-8 pb-2 flex-shrink-0">
             <span className="text-white text-[10px] font-semibold">9:41</span>
-            <div className="flex  items-center gap-1">
+            <div className="flex items-center gap-1">
               <div className="flex gap-0.5 items-end h-3">
                 <div className="w-1 h-1 bg-white rounded-sm" />
                 <div className="w-1 h-1.5 bg-white rounded-sm" />
@@ -28,133 +79,311 @@ function PhoneMockup({ children }) {
               <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M1.5 8.5C5.5 4.5 18.5 4.5 22.5 8.5L20.5 10.5C17.5 7.5 6.5 7.5 3.5 10.5L1.5 8.5ZM5.5 12.5C8 10 16 10 18.5 12.5L16.5 14.5C15 13 9 13 7.5 14.5L5.5 12.5ZM9.5 16.5C10.8 15.2 13.2 15.2 14.5 16.5L12 19L9.5 16.5Z" />
               </svg>
-              <div className="flex items-center gap-0.5">
-                <div className="w-5 h-2.5 border border-white/50 rounded-sm flex items-center px-0.5">
-                  <div className="w-3 h-1.5 bg-white rounded-sm" />
-                </div>
+              <div className="w-5 h-2.5 border border-white/50 rounded-sm flex items-center px-0.5">
+                <div className="w-3 h-1.5 bg-white rounded-sm" />
               </div>
             </div>
           </div>
 
-          {/* Scrollable content area */}
-          <div className="overflow-y-auto px-3 pb-4 scrollbar-hide" style={{ height: 460 }}>
+          {/* Scrollable content */}
+          <div className="flex-1 overflow-y-auto px-3 pb-2" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
             {children}
+          </div>
+
+          {/* Bottom nav */}
+          <div className="flex-shrink-0 relative h-[52px]">
+            {/* SVG arch background */}
+            <svg className="absolute inset-0 w-full h-full" viewBox="0 0 240 52" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0 0 L92 0 A27 27 0 0 1 148 0 L240 0 L240 52 L0 52 Z" fill="#0f0f0f" />
+              <path d="M0 0.5 L92 0.5 A27 27 0 0 1 148 0.5 L240 0.5" stroke="#2a2a2a" strokeWidth="1" fill="none" />
+            </svg>
+
+            {/* Left + right tabs */}
+            <div className="absolute inset-0 z-10 flex items-end justify-around px-2 pb-1.5">
+              {leftTabs.map((tab) => (
+                <div key={tab.id} className="flex flex-col items-center gap-0.5">
+                  <div className={`w-4 h-4 ${activeTab === tab.id ? 'text-[#D0EA59]' : 'text-white/40'}`}>
+                    {tab.icon}
+                  </div>
+                  <span className={`text-[8px] font-medium ${activeTab === tab.id ? 'text-[#D0EA59]' : 'text-white/40'}`}>
+                    {tab.label}
+                  </span>
+                </div>
+              ))}
+              {/* FAB spacer */}
+              <div className="w-10" />
+              {rightTabs.map((tab) => (
+                <div key={tab.id} className="flex flex-col items-center gap-0.5">
+                  <div className={`w-4 h-4 ${activeTab === tab.id ? 'text-[#D0EA59]' : 'text-white/40'}`}>
+                    {tab.icon}
+                  </div>
+                  <span className={`text-[8px] font-medium ${activeTab === tab.id ? 'text-[#D0EA59]' : 'text-white/40'}`}>
+                    {tab.label}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            {/* Record FAB */}
+            <div className="absolute -top-5 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center">
+              <div className="w-10 h-10 rounded-full bg-[#D0EA59] flex items-center justify-center shadow-lg">
+                <svg className="w-3.5 h-3.5 text-black" viewBox="0 0 24 24" fill="currentColor">
+                  <circle cx="12" cy="12" r="5" />
+                </svg>
+              </div>
+              <span className="text-[8px] text-white/40 font-medium mt-0.5">Record</span>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Side buttons */}
-      <div className="absolute right-0 top-20 w-1 h-10 bg-gray-700 rounded-l-sm" />
-      <div className="absolute left-0 top-16 w-1 h-7 bg-gray-700 rounded-r-sm" />
-      <div className="absolute left-0 top-28 w-1 h-12 bg-gray-700 rounded-r-sm" />
-      <div className="absolute left-0 top-44 w-1 h-12 bg-gray-700 rounded-r-sm" />
+      <div className="absolute right-0 top-20 w-1 h-10 bg-[#333] rounded-l-sm" />
+      <div className="absolute left-0 top-16 w-1 h-7 bg-[#333] rounded-r-sm" />
+      <div className="absolute left-0 top-28 w-1 h-12 bg-[#333] rounded-r-sm" />
+      <div className="absolute left-0 top-44 w-1 h-12 bg-[#333] rounded-r-sm" />
     </div>
   );
 }
 
+function YaaroLogoIcon({ className = 'w-6 h-6' }) {
+  return (
+    <svg className={className} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M11 12 L16 7 L21 12" stroke="#D0EA59" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx="16" cy="21" r="6.5" stroke="#D0EA59" strokeWidth="4" />
+    </svg>
+  );
+}
+
+const MOCK_FEED_POSTS = [
+  {
+    id: 1,
+    name: 'Kapil Ramkhiladi Singh',
+    activityKey: 'workout',
+    date: 'Apr 27 at 5:17PM',
+    location: 'Surat - Gujarat',
+    title: 'Morning Strength Session',
+    desc: 'Crushed my personal record today. Feeling stronger every week with consistent training.',
+    stats: [{ label: 'Time', value: '23min' }, { label: 'Volume', value: '672kg' }, { label: 'Set', value: '4' }],
+    kudosText: 'You and 1 others gave kudos',
+    kudosAvatarColor: 'bg-orange-500',
+    kudosAvatarInitial: 'K',
+  },
+  {
+    id: 2,
+    name: 'Priya Sharma',
+    activityKey: 'run',
+    date: 'Apr 27 at 4:56PM',
+    location: 'Mumbai',
+    title: 'Evening Run',
+    desc: 'Great pace today. Beat my personal best on the 5K route around the park.',
+    stats: [{ label: 'Time', value: '28min' }, { label: 'Distance', value: '5.2km' }, { label: 'Pace', value: '5:24' }],
+    kudosText: '5 others gave kudos',
+    kudosAvatarColor: 'bg-purple-500',
+    kudosAvatarInitial: 'P',
+  },
+];
+
 function FeedPreview() {
   return (
-    <div className="space-y-3">
-      <p className="text-white/50 text-[10px] font-semibold uppercase tracking-wider px-1 mb-3">Your Feed</p>
-      {FEED_POSTS.map((post) => (
-        <div key={post.id} className="bg-white/5 rounded-xl border border-white/10 overflow-hidden">
-          <div className="relative h-28 overflow-hidden">
-            <img src={post.image} alt={post.activity} loading="lazy" className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-            <div className="absolute bottom-2 left-3">
-              <span className="text-white text-[10px] font-semibold">{post.activity}</span>
-            </div>
-          </div>
-          <div className="p-2.5">
-            <div className="flex items-center gap-2 mb-2">
-              <div className="w-6 h-6 rounded-full bg-primary flex items-center justify-center text-[8px] font-bold text-white">
-                {post.avatar}
-              </div>
-              <div>
-                <p className="text-white text-[10px] font-medium">{post.user}</p>
-                <p className="text-white/40 text-[9px]">{post.time}</p>
-              </div>
-            </div>
-            <div className="flex gap-2 flex-wrap mb-2">
-              {Object.entries(post.stats).map(([key, val]) => (
-                <span key={key} className="text-[9px] text-white/40">
-                  <span className="text-white/80 font-medium">{val}</span>
-                </span>
-              ))}
-            </div>
-            <div className="flex gap-3 pt-1.5 border-t border-white/10">
-              <button className="flex items-center gap-1 text-white/40 text-[9px]">
-                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                </svg>
-                {post.likes}
-              </button>
-              <button className="flex items-center gap-1 text-white/40 text-[9px]">
-                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                </svg>
-                {post.comments}
-              </button>
-            </div>
-          </div>
+    <div>
+      {/* Screen header */}
+      <div className="flex items-center justify-between mb-3 px-1">
+        <h2 className="text-white font-bold text-base">Feeds</h2>
+        <div className="flex items-center gap-3">
+          <svg className="w-4 h-4 text-white/60" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" />
+          </svg>
+          <svg className="w-4 h-4 text-white/60" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" />
+          </svg>
         </div>
-      ))}
+      </div>
+
+      {/* Feed cards */}
+      <div className="space-y-3">
+        {MOCK_FEED_POSTS.map((post) => {
+          const ActivityIcon = ICONS[post.activityKey];
+          return (
+            <div key={post.id} className="bg-[#1c1c1e] rounded-2xl overflow-hidden">
+              {/* User row */}
+              <div className="flex items-center gap-2.5 px-3 pt-3 pb-2">
+                <div className="w-9 h-9 rounded-xl bg-[#161a0d] flex-shrink-0 flex items-center justify-center border border-primary/20">
+                  <YaaroLogoIcon className="w-6 h-6" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-white font-semibold text-[11px] leading-tight">{post.name}</p>
+                  <div className="flex items-center gap-1 mt-0.5">
+                    {ActivityIcon && <ActivityIcon className="w-2.5 h-2.5 text-white/35" />}
+                    <span className="text-white/35 text-[9px]">{post.date} • {post.location}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Title + description */}
+              <div className="px-3 pb-2">
+                <p className="text-white font-bold text-[13px] mb-1">{post.title}</p>
+                <p className="text-white/45 text-[10px] leading-snug">{post.desc}</p>
+              </div>
+
+              {/* Stats row */}
+              <div className="flex items-center px-3 pb-2 gap-5">
+                {post.stats.map(({ label, value }, i) => (
+                  <div key={label}>
+                    <p className="text-white/40 text-[9px]">{label}</p>
+                    <p className="text-white font-bold text-[11px]">{value}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Media placeholder with Yaaro logo */}
+              <div className="mx-3 mb-3 h-[88px] bg-[#0f0f0f] rounded-xl flex items-center justify-center relative overflow-hidden">
+                <YaaroLogoIcon className="w-14 h-14 opacity-70" />
+                <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-[#1c1c1e]/90 to-transparent" />
+              </div>
+
+              {/* Footer: kudos + actions */}
+              <div className="flex items-center px-3 pb-3">
+                <div className="flex -space-x-1.5 mr-2">
+                  <div className={`w-5 h-5 rounded-full ${post.kudosAvatarColor} border border-[#1c1c1e] flex items-center justify-center text-white text-[7px] font-bold`}>
+                    {post.kudosAvatarInitial}
+                  </div>
+                  <div className="w-5 h-5 rounded-full bg-[#161a0d] border border-[#1c1c1e] flex items-center justify-center">
+                    <YaaroLogoIcon className="w-3.5 h-3.5" />
+                  </div>
+                </div>
+                <span className="text-white/35 text-[9px] flex-1 leading-tight">{post.kudosText}</span>
+                <div className="flex items-center gap-2.5">
+                  {/* Thumbs up — active/lime */}
+                  <svg className="w-4 h-4 text-primary" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M2 20h2a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2H2v11zM20.71 9.29A1 1 0 0 0 20 9h-5.38l.95-3.8A1 1 0 0 0 14.6 4a1 1 0 0 0-.8.4l-5 6.5A1 1 0 0 0 9 11.5V18a2 2 0 0 0 2 2h7a2 2 0 0 0 1.95-1.56l1-5A1 1 0 0 0 20.71 9.29z" />
+                  </svg>
+                  {/* Share */}
+                  <svg className="w-4 h-4 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+const EARN_CHALLENGES = [
+  { iconKey: 'star', title: 'DO 10 Like',  progress: 1, total: 10, points: 100 },
+  { iconKey: 'run',  title: 'Run 10km',    progress: 0, total: 10, points: 100 },
+];
+
+const REWARD_CATEGORIES = [
+  { category: 'Fashion', brand: 'Test Brand', name: 'Free Protein Shaker', useLogo: true,  cost: 1 },
+  { category: 'Fitness', brand: 'Test Brand', name: 'Whey Protein 1kg',    useLogo: false, cost: 1 },
+];
+
+function CoinBadge({ count }) {
+  return (
+    <div className="flex items-center gap-0.5 bg-[#1c1c1e] border border-white/10 rounded-full px-1.5 py-0.5">
+      <span className="text-[11px]">🪙</span>
+      <span className="text-white text-[9px] font-bold">{count}</span>
     </div>
   );
 }
 
 function RewardsPreview() {
   return (
-    <div className="space-y-3">
-      <div className="bg-gradient-to-r from-primary/20 to-primary/5 border border-primary/20 rounded-xl p-3 flex items-center justify-between">
-        <div>
-          <p className="text-white/50 text-[9px] mb-0.5">Your Balance</p>
-          <p className="text-primary font-bold text-xl">2,100 pts</p>
+    <div>
+      {/* Page header */}
+      <div className="flex items-center justify-between mb-4 px-1">
+        <h2 className="text-white font-bold text-base">Rewards</h2>
+        <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-0.5 bg-[#1c1c1e] border border-white/10 rounded-full px-1.5 py-0.5">
+            <span className="text-[11px]">🪙</span><span className="text-white text-[9px] font-bold">1</span>
+          </div>
+          <div className="flex items-center gap-0.5 bg-[#1c1c1e] border border-white/10 rounded-full px-1.5 py-0.5">
+            <span className="text-[11px]">🌿</span><span className="text-white text-[9px] font-bold">0</span>
+          </div>
+          <div className="flex items-center gap-0.5 bg-[#1c1c1e] border border-white/10 rounded-full px-1.5 py-0.5">
+            <span className="text-[11px]">🎟️</span><span className="text-white text-[9px] font-bold">0</span>
+          </div>
         </div>
-        <TrophyIcon className="w-7 h-7 text-primary" />
       </div>
-      <div className="space-y-1.5">
-        <p className="text-white/40 text-[9px] font-semibold uppercase tracking-wider">How to Earn</p>
-        {REWARDS_POINTS.map((item, i) => {
-          const PointIcon = ICONS[item.icon];
+
+      {/* How you earn points */}
+      <div className="flex items-start gap-2 mb-3">
+        <span className="text-lg leading-none mt-0.5">🪙</span>
+        <div>
+          <p className="text-white font-semibold text-[12px] leading-tight">How you earn points</p>
+          <p className="text-white/45 text-[9px] mt-0.5">Stay active, hit milestones to earn points.</p>
+        </div>
+      </div>
+
+      {/* Earn challenge cards — 2 col grid */}
+      <div className="grid grid-cols-2 gap-2 mb-4">
+        {EARN_CHALLENGES.map((c) => {
+          const Icon = ICONS[c.iconKey];
+          const pct = (c.progress / c.total) * 100;
           return (
-            <div key={i} className="flex items-center justify-between bg-white/5 rounded-lg px-2.5 py-2 border border-white/10">
-              <div className="flex items-center gap-2">
-                <div className={`w-5 h-5 flex items-center justify-center flex-shrink-0 ${item.color}`}>
-                  {PointIcon && <PointIcon className="w-3.5 h-3.5" />}
-                </div>
-                <span className="text-white/80 text-[10px] font-medium">{item.label}</span>
+            <div key={c.title} className="bg-[#1c1c1e] rounded-2xl p-3 flex flex-col">
+              {Icon && <Icon className="w-5 h-5 text-[#D0EA59] mb-2" />}
+              <p className="text-white font-bold text-[11px] mb-2 leading-tight">{c.title}</p>
+              <div className="h-1 bg-[#2a2a2a] rounded-full overflow-hidden mb-1">
+                <div className="h-full bg-[#D0EA59] rounded-full" style={{ width: `${pct}%` }} />
               </div>
-              <span className={`text-[10px] font-bold ${item.color}`}>{item.points}</span>
+              <p className="text-white/40 text-[9px] text-right mb-3">{c.progress}/{c.total}</p>
+              <div className="mt-auto bg-[#1e2710] border border-[#2d3d14] rounded-full py-1 text-center">
+                <span className="text-[#D0EA59] text-[9px] font-semibold">+{c.points} Points</span>
+              </div>
             </div>
           );
         })}
       </div>
-      <div>
-        <p className="text-white/40 text-[9px] font-semibold uppercase tracking-wider mb-2">Redeem</p>
-        <div className="space-y-1.5">
-          {REWARD_ITEMS.map((reward) => {
-            const RewardIcon = ICONS[reward.icon];
-            const isLocked = reward.status === 'locked';
-            return (
-              <div key={reward.id} className={`flex items-center justify-between bg-white/5 rounded-lg px-2.5 py-2 border border-white/10 ${isLocked ? 'opacity-60' : ''}`}>
-                <div className="flex items-center gap-2">
-                  <div className="w-5 h-5 flex items-center justify-center flex-shrink-0">
-                    {RewardIcon && <RewardIcon className={`w-3.5 h-3.5 ${isLocked ? 'text-white/40' : 'text-primary'}`} />}
-                  </div>
-                  <div>
-                    <p className="text-white/80 text-[10px] font-medium">{reward.title}</p>
-                    <p className="text-white/40 text-[9px]">{reward.brand}</p>
-                  </div>
-                </div>
-                <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full ${isLocked ? 'bg-white/10 text-white/40' : 'bg-primary/20 text-primary'}`}>
-                  {reward.points.toLocaleString()} pts
-                </span>
-              </div>
-            );
-          })}
+
+      {/* Rewards section header */}
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-start gap-2">
+          <span className="text-lg leading-none mt-0.5">🎟️</span>
+          <div>
+            <p className="text-white font-semibold text-[12px] leading-tight">Rewards</p>
+            <p className="text-white/45 text-[9px] mt-0.5">Use points to redeem rewards.</p>
+          </div>
         </div>
+        <span className="text-[#D0EA59] text-[9px] font-semibold">View all</span>
       </div>
+
+      {/* Reward category cards */}
+      {REWARD_CATEGORIES.map((r) => (
+        <div key={r.category}>
+          <p className="text-white font-bold text-[13px] mb-2">{r.category}</p>
+          <div className="bg-[#1c1c1e] rounded-2xl overflow-hidden flex mb-3" style={{ minHeight: 80 }}>
+            {r.useLogo ? (
+              <>
+                {/* Left logo panel */}
+                <div className="w-[90px] flex-shrink-0 bg-[#161a0d] flex items-center justify-center relative">
+                  <div className="absolute top-2 left-2">
+                    <CoinBadge count={r.cost} />
+                  </div>
+                  <YaaroLogoIcon className="w-12 h-12" />
+                </div>
+                {/* Right info */}
+                <div className="flex-1 px-3 flex flex-col justify-center">
+                  <p className="text-white/45 text-[9px] mb-1">{r.brand}</p>
+                  <p className="text-white font-bold text-[12px] leading-tight">{r.name}</p>
+                </div>
+              </>
+            ) : (
+              /* Full-width image placeholder */
+              <div className="relative w-full h-20 bg-gradient-to-br from-[#3a2e1a] to-[#1c1a14] flex items-center justify-center">
+                <p className="text-white/20 text-[10px]">{r.name}</p>
+                <div className="absolute top-2 right-2">
+                  <CoinBadge count={r.cost} />
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
@@ -208,43 +437,70 @@ function ChallengesPreview() {
 const AVATAR_COLORS = ['bg-blue-500', 'bg-purple-500', 'bg-green-500', 'bg-orange-500', 'bg-pink-500'];
 const FAKE_AVATARS = ['AK', 'RV', 'PS', 'MJ', 'SL'];
 
+const MOCK_CLUBS = [
+  { id: 0, name: 'Nike workout club 0', members: 10,  location: 'Surat, Gujarat' },
+  { id: 1, name: 'Nike workout club 1', members: 20,  location: 'Surat, Gujarat' },
+  { id: 2, name: 'Nike workout club 2', members: 30,  location: 'Surat, Gujarat' },
+  { id: 3, name: 'Nike workout club 3', members: 40,  location: 'Surat, Gujarat' },
+];
+
+function ClubLogoPlaceholder() {
+  return (
+    <div className="w-14 h-14 rounded-xl flex-shrink-0 overflow-hidden bg-gradient-to-br from-[#3ab5c4] to-[#1d7d8a] flex items-center justify-center">
+      <svg className="w-8 h-8 text-yellow-400" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.25C17.25 22.15 21 17.25 21 12V7L12 2z" opacity="0.3" />
+        <path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.25C17.25 22.15 21 17.25 21 12V7L12 2z" fill="none" stroke="currentColor" strokeWidth="1.5" />
+        <text x="12" y="15" textAnchor="middle" fontSize="5" fill="currentColor" fontWeight="bold">CLUB</text>
+      </svg>
+    </div>
+  );
+}
+
 function ClubsPreview() {
   return (
-    <div className="space-y-3">
-      <p className="text-white/50 text-[10px] font-semibold uppercase tracking-wider px-1 mb-3">Popular Clubs</p>
-      {CLUBS.map((club) => {
-        const CIcon = ICONS[club.icon];
-        return (
-          <div key={club.id} className="bg-white/5 rounded-xl border border-white/10 p-3">
-            <div className="flex items-center gap-2 mb-2.5">
-              <div className="w-8 h-8 rounded-lg bg-primary/15 border border-primary/20 flex items-center justify-center flex-shrink-0">
-                {CIcon && <CIcon className="w-4 h-4 text-primary" />}
+    <div>
+      {/* Page header */}
+      <h2 className="text-white font-bold text-base mb-4 px-1">Social</h2>
+
+      {/* Challenges | Clubs tab switcher */}
+      <div className="flex mb-1 border-b border-white/10">
+        <button className="flex-1 pb-2 text-[11px] font-medium text-white/40 text-center">Challenges</button>
+        <button className="flex-1 pb-2 text-[11px] font-semibold text-[#D0EA59] text-center relative">
+          Clubs
+          <span className="absolute bottom-0 left-1/4 right-1/4 h-[2px] bg-[#D0EA59] rounded-full" />
+        </button>
+      </div>
+
+      {/* Create club row */}
+      <div className="flex items-center justify-between py-2.5 mb-2 border-b border-white/8">
+        <span className="text-white text-[11px] font-medium">Create your own club</span>
+        <span className="text-[#D0EA59] text-[11px] font-semibold">Create</span>
+      </div>
+
+      {/* Club list */}
+      <div className="space-y-2 mt-2">
+        {MOCK_CLUBS.map((club) => (
+          <div key={club.id} className="flex items-center gap-3 bg-[#1c1c1e] rounded-2xl px-3 py-3">
+            <ClubLogoPlaceholder />
+            <div className="flex-1 min-w-0">
+              <p className="text-white font-bold text-[12px] mb-1 leading-tight">{club.name}</p>
+              <div className="flex items-center gap-1 mb-0.5">
+                <svg className="w-3 h-3 text-white/45 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" />
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+                </svg>
+                <span className="text-white/45 text-[10px]">{club.members} Members</span>
               </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-white/90 text-[10px] font-semibold truncate">{club.name}</p>
-                <span className="text-[9px] text-primary bg-primary/10 px-1.5 py-0.5 rounded-full">{club.activity}</span>
+              <div className="flex items-center gap-1">
+                <svg className="w-3 h-3 text-white/45 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 1 1 18 0z" /><circle cx="12" cy="10" r="3" />
+                </svg>
+                <span className="text-white/45 text-[10px]">{club.location}</span>
               </div>
-            </div>
-            <div className="flex items-center justify-between mb-2">
-              <div>
-                <p className="text-white font-bold text-sm">{club.members.toLocaleString()}</p>
-                <p className="text-white/40 text-[9px]">Members</p>
-              </div>
-              <p className="text-green-400 text-[9px] font-medium text-right">{club.recentActivity}</p>
-            </div>
-            <div className="flex items-center justify-between">
-              <div className="flex -space-x-1.5">
-                {FAKE_AVATARS.slice(0, 4).map((initials, j) => (
-                  <div key={j} className={`w-5 h-5 rounded-full ${AVATAR_COLORS[j]} border border-black flex items-center justify-center text-white text-[7px] font-bold`}>
-                    {initials[0]}
-                  </div>
-                ))}
-              </div>
-              <button className="text-[9px] text-primary font-semibold">Join Club →</button>
             </div>
           </div>
-        );
-      })}
+        ))}
+      </div>
     </div>
   );
 }
@@ -323,7 +579,7 @@ function FeatureRow({ feature, index }) {
       viewport={{ once: true }}
       className={`flex items-center ${isEven ? 'lg:justify-start' : 'lg:justify-start'} justify-center`}
     >
-      <PhoneMockup>
+      <PhoneMockup activeTab={TAB_ACTIVE_MAP[feature.id]}>
         {FEATURE_PREVIEWS[feature.id]}
       </PhoneMockup>
     </motion.div>

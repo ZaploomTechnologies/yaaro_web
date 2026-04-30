@@ -112,14 +112,14 @@ export default function CTASection() {
         </motion.div>
 
         {/* Social Proof */}
-        <motion.div
+        {/* TODO: uncomment when stats are finalized */}
+        {/* <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.5 }}
           viewport={{ once: true }}
           className="flex flex-col sm:flex-row items-center justify-center gap-6"
         >
-          {/* Avatars */}
           <div className="flex -space-x-2">
             {['AK', 'RS', 'PM', 'DV', 'SK'].map((initials, i) => (
               <div
@@ -143,7 +143,7 @@ export default function CTASection() {
               <span className="text-surface-text font-semibold">4.8/5</span> from 10,000+ reviews
             </p>
           </div>
-        </motion.div>
+        </motion.div> */}
 
         {/* Decorative line */}
         <motion.div

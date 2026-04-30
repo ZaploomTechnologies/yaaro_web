@@ -4,7 +4,10 @@ import {
   FlameIcon,
   RunIcon,
   CycleIcon,
-  FootprintIcon,
+  WalkIcon,
+  DumbbellIcon,
+  DanceIcon,
+  UsersIcon,
   PlayStoreIcon,
 } from '../components/Icons';
 
@@ -26,84 +29,151 @@ function StatBadge({ value, label }) {
   );
 }
 
+const RECORD_SECTIONS = [
+  {
+    title: 'Strength',
+    items: [
+      { Icon: DumbbellIcon, name: 'Quick Workout', desc: 'Log exercises with sets, reps, and weights.' },
+    ],
+  },
+  {
+    title: 'Cardio',
+    items: [
+      { Icon: WalkIcon,     name: 'Walk',    desc: 'Track your steps and distance with GPS.' },
+      { Icon: RunIcon,      name: 'Run',     desc: 'Monitor your pace, distance, and route.' },
+      { Icon: CycleIcon,    name: 'Cycling', desc: 'Record your ride speed and distance.' },
+      { Icon: DanceIcon,    name: 'Dance',   desc: 'Record your dance duration.' },
+    ],
+  },
+];
+
+function ChevronRight() {
+  return (
+    <svg className="w-3 h-3 text-surface-secondary flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+      <path d="M9 18l6-6-6-6" />
+    </svg>
+  );
+}
+
 function PhoneMockup() {
   return (
-    <div className="relative w-64 mx-auto">
+    <div className="relative mx-auto" style={{ width: 260 }}>
       {/* Phone Frame */}
-      <div className="relative bg-surface-card border border-border rounded-[2.5rem] p-3 shadow-2xl">
+      <div className="relative bg-[#212121] rounded-[2.5rem] p-[10px] shadow-2xl ring-1 ring-white/10">
         {/* Notch */}
-        <div className="absolute top-3 left-1/2 -translate-x-1/2 w-20 h-5 bg-surface-bg rounded-full z-10" />
+        <div className="absolute top-[14px] left-1/2 -translate-x-1/2 w-[72px] h-[22px] bg-[#212121] rounded-full z-10 flex items-center justify-center gap-1.5">
+          <div className="w-2 h-2 rounded-full bg-[#1a1a1a]" />
+          <div className="w-1.5 h-1.5 rounded-full bg-[#1a1a1a]" />
+        </div>
 
         {/* Screen */}
-        <div className="bg-surface-bg rounded-[2rem] overflow-hidden h-[480px] relative">
+        <div className="bg-[#0f0f0f] rounded-[2rem] overflow-hidden h-[500px] relative flex flex-col">
+
           {/* Status bar */}
-          <div className="flex items-center justify-between px-5 pt-7 pb-3">
-            <span className="text-xs text-surface-secondary font-medium">9:41</span>
-            <div className="flex gap-1.5">
-              <div className="w-4 h-2 rounded-sm bg-primary" />
-              <div className="w-1 h-2 rounded-sm bg-surface-secondary" />
-            </div>
-          </div>
-
-          {/* App Header */}
-          <div className="px-4 pb-4">
-            <p className="text-surface-secondary text-xs mb-1">Good morning,</p>
-            <p className="text-surface-text font-semibold text-base">Arjun</p>
-          </div>
-
-          {/* Activity Ring */}
-          <div className="flex items-center justify-center mb-4">
-            <div className="relative w-28 h-28">
-              <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90">
-                <circle cx="50" cy="50" r="42" fill="none" stroke="#212121" strokeWidth="10" />
-                <circle
-                  cx="50" cy="50" r="42" fill="none" stroke="#D0EA59" strokeWidth="10"
-                  strokeDasharray="264" strokeDashoffset="66"
-                  strokeLinecap="round"
-                />
+          <div className="flex items-center justify-between px-5 pt-8 pb-2 flex-shrink-0">
+            <span className="text-white text-[10px] font-semibold">9:41</span>
+            <div className="flex items-center gap-1">
+              <div className="flex gap-0.5 items-end h-3">
+                <div className="w-1 h-1 bg-white rounded-sm" />
+                <div className="w-1 h-1.5 bg-white rounded-sm" />
+                <div className="w-1 h-2 bg-white rounded-sm" />
+                <div className="w-1 h-2.5 bg-white/40 rounded-sm" />
+              </div>
+              <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M1.5 8.5C5.5 4.5 18.5 4.5 22.5 8.5L20.5 10.5C17.5 7.5 6.5 7.5 3.5 10.5L1.5 8.5ZM5.5 12.5C8 10 16 10 18.5 12.5L16.5 14.5C15 13 9 13 7.5 14.5L5.5 12.5ZM9.5 16.5C10.8 15.2 13.2 15.2 14.5 16.5L12 19L9.5 16.5Z" />
               </svg>
-              <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-primary font-bold text-lg">75%</span>
-                <span className="text-surface-secondary text-xs">Daily Goal</span>
+              <div className="w-5 h-2.5 border border-white/50 rounded-sm flex items-center px-0.5">
+                <div className="w-3 h-1.5 bg-white rounded-sm" />
               </div>
             </div>
           </div>
 
-          {/* Stat Pills */}
-          <div className="flex gap-2 px-4 mb-4">
-            {[
-              { label: 'Steps', value: '7,524', Icon: FootprintIcon },
-              { label: 'Calories', value: '320', Icon: FlameIcon },
-            ].map((s) => (
-              <div key={s.label} className="flex-1 bg-surface-card rounded-xl p-2.5 border border-border">
-                <s.Icon className="w-4 h-4 text-primary mb-0.5" />
-                <p className="text-surface-text font-semibold text-xs">{s.value}</p>
-                <p className="text-surface-secondary text-xs">{s.label}</p>
+          {/* Page title */}
+          <div className="px-4 pb-2 flex-shrink-0">
+            <h2 className="text-surface-text font-bold text-lg">Record</h2>
+          </div>
+
+          {/* Scrollable workout list */}
+          <div className="flex-1 overflow-y-auto px-3 space-y-3 pb-2" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+            {RECORD_SECTIONS.map((section) => (
+              <div key={section.title}>
+                <p className="text-surface-secondary text-[10px] font-medium mb-1.5 px-1">{section.title}</p>
+                <div className="space-y-1.5">
+                  {section.items.map((item) => (
+                    <div key={item.name} className="flex items-center gap-2.5 bg-surface-card rounded-2xl px-3 py-3 border border-border">
+                      <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <item.Icon className="w-5 h-5 text-primary" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-surface-text font-semibold text-xs leading-tight">{item.name}</p>
+                        <p className="text-surface-secondary text-[10px] leading-snug mt-0.5">{item.desc}</p>
+                      </div>
+                      <ChevronRight />
+                    </div>
+                  ))}
+                </div>
               </div>
             ))}
           </div>
 
-          {/* Recent Activity */}
-          <div className="px-4">
-            <p className="text-surface-secondary text-xs mb-2 font-medium tracking-wide">RECENT ACTIVITY</p>
-            {[
-              { Icon: RunIcon, activity: 'Morning Run', distance: '5.2 km', time: '28 min' },
-              { Icon: CycleIcon, activity: 'Evening Ride', distance: '12 km', time: '48 min' },
-            ].map((a, i) => (
-              <div key={i} className="flex items-center gap-2.5 mb-2 bg-surface-card rounded-xl p-2.5 border border-border">
-                <div className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                  <a.Icon className="w-4 h-4 text-primary" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-surface-text text-xs font-medium truncate">{a.activity}</p>
-                  <p className="text-surface-secondary text-xs">{a.distance} • {a.time}</p>
-                </div>
-                <span className="text-primary text-xs font-semibold">+50pts</span>
+          {/* Bottom nav */}
+          <div className="flex-shrink-0 relative h-[52px]">
+            {/* SVG nav background with smooth arch notch for FAB */}
+            <svg
+              className="absolute inset-0 w-full h-full"
+              viewBox="0 0 220 52"
+              preserveAspectRatio="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M0 0 L84 0 A27 27 0 0 1 136 0 L220 0 L220 52 L0 52 Z" fill="#0F0F0F" />
+              <path d="M0 0.5 L84 0.5 A27 27 0 0 1 136 0.5 L220 0.5" stroke="#363635" strokeWidth="1" fill="none" />
+            </svg>
+
+            {/* Feed / Social / Rewards / Profile */}
+            <div className="absolute inset-0 z-10 flex items-end justify-around px-2 pb-1.5">
+              <div className="flex flex-col items-center gap-0.5">
+                <svg className="w-4 h-4 text-surface-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round">
+                  <path d="M4 6h16M4 10h16M4 14h10" />
+                </svg>
+                <span className="text-[8px] text-surface-secondary">Feed</span>
               </div>
-            ))}
+              <div className="flex flex-col items-center gap-0.5">
+                <UsersIcon className="w-4 h-4 text-surface-secondary" />
+                <span className="text-[8px] text-surface-secondary">Social</span>
+              </div>
+              {/* Spacer for FAB */}
+              <div className="w-10" />
+              <div className="flex flex-col items-center gap-0.5">
+                <TrophyIcon className="w-4 h-4 text-surface-secondary" />
+                <span className="text-[8px] text-surface-secondary">Rewards</span>
+              </div>
+              <div className="flex flex-col items-center gap-0.5">
+                <svg className="w-4 h-4 text-surface-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+                <span className="text-[8px] text-surface-secondary">Profile</span>
+              </div>
+            </div>
+
+            {/* Record FAB — sits half above the nav bar edge, inside the arch */}
+            <div className="absolute -top-5 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center">
+              <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center shadow-lg">
+                <svg className="w-3.5 h-3.5 text-black" viewBox="0 0 24 24" fill="currentColor">
+                  <circle cx="12" cy="12" r="5" />
+                </svg>
+              </div>
+              <span className="text-[8px] text-primary font-semibold mt-0.5">Record</span>
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Side buttons */}
+      <div className="absolute right-0 top-20 w-1 h-10 bg-[#333] rounded-l-sm" />
+      <div className="absolute left-0 top-16 w-1 h-7 bg-[#333] rounded-r-sm" />
+      <div className="absolute left-0 top-28 w-1 h-12 bg-[#333] rounded-r-sm" />
+      <div className="absolute left-0 top-44 w-1 h-12 bg-[#333] rounded-r-sm" />
 
       {/* Floating badge: points */}
       <motion.div
@@ -239,19 +309,20 @@ export default function Hero() {
             </motion.div>
 
             {/* Stats */}
-            <motion.div
-              custom={4}
-              variants={fadeUp}
-              initial="hidden"
-              animate="visible"
-              className="flex items-center gap-8 pt-8 border-t border-border"
-            >
-              <StatBadge value="50K+" label="Active Users" />
+            {/* <motion.div */}
+              {/* custom={4} */}
+              {/* variants={fadeUp} */}
+              {/* initial="hidden" */}
+              {/* animate="visible" */}
+              {/* className="flex items-center gap-8 pt-8 border-t border-border" */}
+            {/* > */}
+              {/* TODO: uncomment when stats are finalized */}
+              {/* <StatBadge value="50K+" label="Active Users" />
               <div className="w-px h-10 bg-border" />
               <StatBadge value="5M+" label="Activities Logged" />
               <div className="w-px h-10 bg-border" />
-              <StatBadge value="10K+" label="Rewards Redeemed" />
-            </motion.div>
+              <StatBadge value="10K+" label="Rewards Redeemed" /> */}
+            {/* </motion.div> */}
           </div>
 
           {/* Right: Phone Mockup */}
