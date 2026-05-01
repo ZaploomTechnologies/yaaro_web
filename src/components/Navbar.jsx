@@ -14,9 +14,13 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const handleNavClick = (href) => {
+  const handleNavClick = (e, href) => {
+    e.preventDefault();
     setActiveLink(href);
     setMenuOpen(false);
+    setTimeout(() => {
+      window.location.hash = href;
+    }, 300);
   };
 
   return (
@@ -43,7 +47,7 @@ export default function Navbar() {
               <a
                 key={link.href}
                 href={link.href}
-                onClick={() => handleNavClick(link.href)}
+                onClick={(e) => handleNavClick(e, link.href)}
                 className={`px-4 py-2 rounded-lg text-md font-medium transition-all duration-200 ${
                   activeLink === link.href
                     ? 'text-primary bg-primary/10'
@@ -91,7 +95,7 @@ export default function Navbar() {
                 <a
                   key={link.href}
                   href={link.href}
-                  onClick={() => handleNavClick(link.href)}
+                  onClick={(e) => handleNavClick(e, link.href)}
                   className="block px-4 py-3 rounded-xl text-surface-secondary hover:text-surface-text hover:bg-surface-card transition-all font-medium"
                 >
                   {link.label}

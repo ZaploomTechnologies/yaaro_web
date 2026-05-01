@@ -729,7 +729,7 @@ export default function WhyYaaro() {
   const [progressOpen, setProgressOpen] = useState(false);
 
   return (
-    <section id="why-yaaro" className="py-24 relative" aria-label="Why Yaaro section">
+    <section id="why-yaaro" className="py-12 md:py-24 relative" aria-label="Why Yaaro section">
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         <div className="w-[600px] h-64 bg-primary/5 rounded-full blur-3xl" />
       </div>
@@ -741,7 +741,7 @@ export default function WhyYaaro() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-8 md:mb-16"
         >
           <span className="inline-block text-xs font-semibold text-primary bg-primary/10 border border-primary/20 px-4 py-1.5 rounded-full mb-4 tracking-wide uppercase">
             Why Yaaro

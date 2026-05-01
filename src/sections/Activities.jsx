@@ -4,7 +4,7 @@ import { ACTIVITIES } from '../constants';
 
 export default function Activities() {
   return (
-    <section id="activities" className="py-24 relative" aria-label="Activities section">
+    <section id="activities" className="py-12 md:py-24 relative" aria-label="Activities section">
       {/* Subtle background accent */}
       <div className="absolute left-0 top-1/2 -translate-y-1/2 w-72 h-72 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
 
@@ -15,7 +15,7 @@ export default function Activities() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-14"
+          className="text-center mb-8 md:mb-14"
         >
           <span className="inline-block text-xs font-semibold text-primary bg-primary/10 border border-primary/20 px-4 py-1.5 rounded-full mb-4 tracking-wide uppercase">
             Activities

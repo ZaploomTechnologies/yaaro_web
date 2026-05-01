@@ -17,7 +17,7 @@ import ScrollToTop from './components/ScrollToTop';
 
 function LandingPage() {
   return (
-    <div className="bg-surface-bg min-h-screen overflow-x-hidden">
+    <div className="bg-surface-bg min-h-screen overflow-x-hidden overflow-y-visible">
       <Navbar />
       <main>
         <Hero />

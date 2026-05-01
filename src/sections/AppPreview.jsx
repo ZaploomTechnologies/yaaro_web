@@ -86,7 +86,7 @@ function RefreshIcon({ className }) {
 
 export default function AppPreview() {
   return (
-    <section id="how-it-works" className="py-24 relative overflow-hidden" aria-label="How it works section">
+    <section id="how-it-works" className="py-12 md:py-24 relative overflow-hidden" aria-label="How it works section">
       {/* Ambient glows */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-primary/3 rounded-full blur-[120px]" />
@@ -102,7 +102,7 @@ export default function AppPreview() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-8 md:mb-16"
         >
           <span className="inline-block text-xs font-semibold text-primary bg-primary/10 border border-primary/20 px-4 py-1.5 rounded-full mb-4 tracking-wide uppercase">
             How It Works

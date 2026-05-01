@@ -545,7 +545,7 @@ function FeatureRow({ feature, index }) {
       whileInView={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.6, delay: 0.1 }}
       viewport={{ once: true }}
-      className="flex flex-col justify-center"
+      className={`flex flex-col justify-center ${!isEven ? 'order-1 lg:order-2' : ''}`}
     >
       <span className={`inline-block text-xs font-semibold px-3 py-1.5 rounded-full mb-4 w-fit ${feature.badgeColor}`}>
         {feature.badge}
@@ -577,7 +577,7 @@ function FeatureRow({ feature, index }) {
       whileInView={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.6, delay: 0.2 }}
       viewport={{ once: true }}
-      className={`flex items-center ${isEven ? 'lg:justify-start' : 'lg:justify-start'} justify-center`}
+      className={`flex items-center justify-center lg:justify-start ${!isEven ? 'order-2 lg:order-1' : ''}`}
     >
       <PhoneMockup activeTab={TAB_ACTIVE_MAP[feature.id]}>
         {FEATURE_PREVIEWS[feature.id]}
@@ -604,7 +604,7 @@ function FeatureRow({ feature, index }) {
 
 export default function Features() {
   return (
-    <section id="features" className="py-24 relative" aria-label="Features section">
+    <section id="features" className="py-12 md:py-24 relative" aria-label="Features section">
       <div className="absolute right-0 top-1/3 w-96 h-96 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute left-0 bottom-1/4 w-72 h-72 bg-blue-500/5 rounded-full blur-3xl pointer-events-none" />
 
@@ -615,7 +615,7 @@ export default function Features() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-20"
+          className="text-center mb-10 md:mb-20"
         >
           <span className="inline-block text-xs font-semibold text-primary bg-primary/10 border border-primary/20 px-4 py-1.5 rounded-full mb-4 tracking-wide uppercase">
             Features
@@ -630,7 +630,7 @@ export default function Features() {
         </motion.div>
 
         {/* Feature Rows */}
-        <div className="space-y-28">
+        <div className="space-y-14 md:space-y-28">
           {FEATURES.map((feature, index) => (
             <FeatureRow key={feature.id} feature={feature} index={index} />
           ))}

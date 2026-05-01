@@ -41,7 +41,7 @@ export default function CTASection() {
   return (
     <section
       id="download"
-      className="py-24 relative overflow-hidden"
+      className="py-12 md:py-24 relative overflow-hidden"
       aria-label="Download section"
     >
       {/* Background */}
@@ -146,13 +146,13 @@ export default function CTASection() {
         </motion.div> */}
 
         {/* Decorative line */}
-        <motion.div
+        {/* <motion.div
           initial={{ scaleX: 0 }}
           whileInView={{ scaleX: 1 }}
           transition={{ duration: 1, delay: 0.4 }}
           viewport={{ once: true }}
           className="mt-16 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent"
-        />
+        /> */}
       </div>
     </section>
   );
