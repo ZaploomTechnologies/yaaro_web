@@ -1,4 +1,6 @@
-import { Link } from 'react-router-dom';
+'use client';
+
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 
 export default function LegalLayout({ title, subtitle, children }) {
@@ -13,7 +15,7 @@ export default function LegalLayout({ title, subtitle, children }) {
         >
           {/* Header */}
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-            <Link to="/" className="inline-block hover:opacity-80 transition-opacity shrink-0">
+            <Link href="/" className="inline-block hover:opacity-80 transition-opacity shrink-0">
               <img src="/Yaaro-Logo.png" alt="Yaaro" width={84} />
             </Link>
             {subtitle && (

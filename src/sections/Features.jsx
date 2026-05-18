@@ -1,3 +1,5 @@
+'use client';
+
 import { motion } from 'framer-motion';
 import { ICONS, TrophyIcon } from '../components/Icons';
 import { FEATURES, REWARDS_POINTS, REWARD_ITEMS, CHALLENGES, CLUBS, FEED_POSTS } from '../constants';

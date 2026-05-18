@@ -1,4 +1,6 @@
-import { Link } from 'react-router-dom';
+'use client';
+
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 
 const FOOTER_LINKS = {
@@ -81,14 +83,14 @@ export default function Footer() {
                   <li key={link.label}>
                     {link.label === 'Privacy Policy' ? (
                       <Link
-                        to="/privacy-policy"
+                        href="/privacy-policy"
                         className="text-surface-secondary text-sm hover:text-primary transition-colors duration-200"
                       >
                         {link.label}
                       </Link>
                     ) : link.label === 'Terms of Service' ? (
                       <Link
-                        to="/terms"
+                        href="/terms"
                         className="text-surface-secondary text-sm hover:text-primary transition-colors duration-200"
                       >
                         {link.label}

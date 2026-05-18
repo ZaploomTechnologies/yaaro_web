@@ -4,36 +4,27 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "prestart": "node -e \"require('fs').existsSync('dist/index.html')||process.exit(1)\" || npm run build",
-    "start": "vite preview",
-    "pm2:start": "pm2 start ecosystem.config.cjs",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
     "framer-motion": "^12.38.0",
+    "next": "^15.0.0",
     "react": "^19.2.4",
-    "react-dom": "^19.2.4",
-    "react-helmet-async": "^3.0.0",
-    "react-router-dom": "^7.13.2"
+    "react-dom": "^19.2.4"
   },
   "devDependencies": {
-    "@babel/core": "^7.29.0",
     "@eslint/js": "^9.39.4",
-    "@rolldown/plugin-babel": "^0.2.1",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^6.0.1",
     "autoprefixer": "^10.4.27",
-    "babel-plugin-react-compiler": "^1.0.0",
     "eslint": "^9.39.4",
+    "eslint-config-next": "^16.2.6",
     "eslint-plugin-react-hooks": "^7.0.1",
-    "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^17.4.0",
     "postcss": "^8.5.8",
-    "tailwindcss": "^3.4.19",
-    "vite": "^8.0.1"
+    "tailwindcss": "^3.4.19"
   }
 }

@@ -1,3 +1,5 @@
+'use client';
+
 import { motion } from 'framer-motion';
 import { ANIMATED_ICONS } from './AnimatedIcons';
 import { ICONS } from './Icons';

@@ -1,3 +1,5 @@
+'use client';
+
 // Micro-animated activity icons.
 // Run/Walk/Dumbbell: Framer Motion on the whole <svg> element.
 // Cycle wheels: pure CSS keyframes (transform-box: fill-box) to reliably

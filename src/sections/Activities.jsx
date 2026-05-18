@@ -1,3 +1,5 @@
+'use client';
+
 import { motion } from 'framer-motion';
 import ActivityCard from '../components/ActivityCard';
 import { ACTIVITIES } from '../constants';
