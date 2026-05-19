@@ -1,6 +1,12 @@
 import WorkoutPage from '@/src/views/WorkoutPage';
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3100/api/frontend';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://yaaro.fit';
+
+function toAbsoluteUrl(url) {
+  if (!url) return null;
+  return url.startsWith('http') ? url : `${siteUrl}${url.startsWith('/') ? '' : '/'}${url}`;
+}
 
 function formatActivityDate(dateStr) {
   if (!dateStr) return '';
@@ -28,7 +34,7 @@ export async function generateMetadata({ params }) {
 
     const title = `${feedData.title || activityType} | Yaaro`;
     const description = `View ${firstName}'s ${activityType} on ${date} | Yaaro`;
-    const image = feedData.media?.[0] || userData.profileImage || '/Yaaro-Icon.png';
+    const image = toAbsoluteUrl(feedData.media?.[0] || userData.profileImage || '/Yaaro-Icon.png');
     return {
       title,
       description,
