@@ -47,11 +47,16 @@ module.exports = {
             merge_logs: true,
             env: {
                 NODE_ENV: 'production',
-                PORT: process.env.PORT || 4173,
+                PORT: process.env.PORT || 3001,
+                NEXT_PUBLIC_API_URL:
+                    process.env.NEXT_PUBLIC_API_URL ||
+                    'https://api.yaaro.fit/api/frontend',
+                NEXT_PUBLIC_SITE_URL:
+                    process.env.NEXT_PUBLIC_SITE_URL || 'https://yaaro.fit',
             },
             env_development: {
                 NODE_ENV: 'development',
-                PORT: process.env.PORT || 4173,
+                PORT: process.env.PORT || 3001,
             },
             autorestart: true,
             restart_delay: 4000,
