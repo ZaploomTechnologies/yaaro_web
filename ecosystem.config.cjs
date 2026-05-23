@@ -50,7 +50,7 @@ module.exports = {
                 PORT: process.env.PORT || 3001,
                 NEXT_PUBLIC_API_URL:
                     process.env.NEXT_PUBLIC_API_URL ||
-                    'https://api.yaaro.fit/api/frontend',
+                    'https://api.yaaro.fit/frontend/v1',
                 NEXT_PUBLIC_SITE_URL:
                     process.env.NEXT_PUBLIC_SITE_URL || 'https://yaaro.fit',
             },
