@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { ICONS } from '../components/Icons';
+import { apiUrl } from '../lib/api';
 
 // Mock data — replace with API call later
 const MOCK_PROFILE = {
@@ -66,9 +67,8 @@ export default function ProfilePage({ serverParams, initialData }) {
     const fetchProfile = async () => {
       try {
         setLoading(true);
-        const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3100/api/frontend';
-        const response = await fetch(`${baseUrl}/users/${userId}`);
-
+        const response = await fetch(apiUrl(`/users/${userId}`));
+        
         if (!response.ok) {
           throw new Error('Profile not found');
         }

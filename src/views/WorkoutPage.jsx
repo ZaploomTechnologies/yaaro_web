@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { ICONS } from '../components/Icons';
+import { apiUrl } from '../lib/api';
 
 const formatDuration = (seconds) => {
   if (!seconds) return '0min';
@@ -247,16 +248,14 @@ export default function WorkoutPage({ serverParams }) {
     const fetchWorkout = async () => {
       try {
         setLoading(true);
-        const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3100/api/frontend';
-        
-        const response = await fetch(`${baseUrl}/activities/${activityId}`);
+        const response = await fetch(apiUrl(`/activities/${activityId}`));
         if (!response.ok) throw new Error('Activity not found');
         const feedData = await response.json();
-        
-        const statsResponse = await fetch(`${baseUrl}/activities/${activityId}/detail`);
+
+        const statsResponse = await fetch(apiUrl(`/activities/${activityId}/detail`));
         const statsData = await statsResponse.json();
 
-        const userResponse = await fetch(`${baseUrl}/users/${feedData.userId}`);
+        const userResponse = await fetch(apiUrl(`/users/${feedData.userId}`));
         const userData = await userResponse.json();
 
         const totalSets = feedData.exercises.reduce((acc, ex) => acc + ex.sets.length, 0);

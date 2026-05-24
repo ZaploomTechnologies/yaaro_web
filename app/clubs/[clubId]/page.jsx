@@ -1,11 +1,10 @@
 import ClubPage from '@/src/views/ClubPage';
-
-const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3100/api/frontend';
+import { apiUrl } from '@/src/lib/api';
 
 export async function generateMetadata({ params }) {
   const { clubId } = await params;
   try {
-    const res = await fetch(`${baseUrl}/clubs/${clubId}`, { next: { revalidate: 60 } });
+    const res = await fetch(apiUrl(`/clubs/${clubId}`), { next: { revalidate: 60 } });
     if (!res.ok) throw new Error('not found');
     const club = await res.json();
     const locationStr = club.location?.city || club.location?.state || club.location?.country || '';

@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { ICONS } from '../components/Icons';
+import { apiUrl } from '../lib/api';
 
 import { useState, useEffect } from 'react';
 
@@ -18,8 +19,7 @@ export default function ClubPage({ serverParams }) {
     const fetchClub = async () => {
       try {
         setLoading(true);
-        const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3100/api/frontend';
-        const response = await fetch(`${baseUrl}/clubs/${clubId}`);
+        const response = await fetch(apiUrl(`/clubs/${clubId}`));
 
         if (!response.ok) {
           throw new Error('Club not found');

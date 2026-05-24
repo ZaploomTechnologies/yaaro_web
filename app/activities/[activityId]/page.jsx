@@ -1,6 +1,5 @@
 import WorkoutPage from '@/src/views/WorkoutPage';
-
-const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3100/api/frontend';
+import { apiUrl } from '@/src/lib/api';
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://yaaro.fit';
 
 function toAbsoluteUrl(url) {
@@ -20,11 +19,11 @@ function formatActivityDate(dateStr) {
 export async function generateMetadata({ params }) {
   const { activityId } = await params;
   try {
-    const res = await fetch(`${baseUrl}/activities/${activityId}`, { next: { revalidate: 60 } });
+    const res = await fetch(apiUrl(`/activities/${activityId}`), { next: { revalidate: 60 } });
     if (!res.ok) throw new Error('not found');
     const feedData = await res.json();
 
-    const userRes = await fetch(`${baseUrl}/users/${feedData.userId}`, { next: { revalidate: 60 } });
+    const userRes = await fetch(apiUrl(`/users/${feedData.userId}`), { next: { revalidate: 60 } });
     const userData = userRes.ok ? await userRes.json() : {};
 
     const fullName = userData.fullName || feedData.userName || 'Unknown';

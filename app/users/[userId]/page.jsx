@@ -1,12 +1,11 @@
 import { notFound } from 'next/navigation';
 import ProfilePage from '@/src/views/ProfilePage';
-
-const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3100/api/frontend';
+import { apiUrl } from '@/src/lib/api';
 
 export async function generateMetadata({ params }) {
   const { userId } = await params;
   try {
-    const res = await fetch(`${baseUrl}/users/${userId}`, { next: { revalidate: 60 } });
+    const res = await fetch(apiUrl(`/users/${userId}`), { next: { revalidate: 60 } });
     if (!res.ok) throw new Error('not found');
     const p = await res.json();
     const title = `${p.fullName} | Yaaro`;
