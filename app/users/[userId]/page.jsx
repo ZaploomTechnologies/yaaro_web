@@ -1,3 +1,4 @@
+import { notFound } from 'next/navigation';
 import ProfilePage from '@/src/views/ProfilePage';
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3100/api/frontend';
@@ -22,6 +23,16 @@ export async function generateMetadata({ params }) {
   }
 }
 
-export default function UserPage({ params }) {
-  return <ProfilePage serverParams={params} />;
+export default async function UserPage({ params }) {
+  const { userId } = await params;
+
+  // Fetch server-side — triggers the 404 page on any failure
+  try {
+    const res = await fetch(`${baseUrl}/users/${userId}`, { next: { revalidate: 60 } });
+    if (!res.ok) notFound();
+    const data = await res.json();
+    return <ProfilePage initialData={data} />;
+  } catch {
+    notFound();
+  }
 }

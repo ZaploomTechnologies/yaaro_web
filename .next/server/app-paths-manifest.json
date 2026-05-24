@@ -1,4 +1,4 @@
 {
-  "/page": "app/page.js",
-  "/activities/[activityId]/page": "app/activities/[activityId]/page.js"
+  "/referral/page": "app/referral/page.js",
+  "/page": "app/page.js"
 }

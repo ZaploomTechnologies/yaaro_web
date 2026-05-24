@@ -51,25 +51,28 @@ function AvatarPlaceholder({ name }) {
 }
 
 
-export default function ProfilePage({ serverParams }) {
+export default function ProfilePage({ serverParams, initialData }) {
   const routerParams = useParams();
   const userId = routerParams?.userId ?? serverParams?.userId;
-  const [profile, setProfile] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [profile, setProfile] = useState(initialData || null);
+  const [loading, setLoading] = useState(!initialData);
   const [error, setError] = useState(null);
   const [imgError, setImgError] = useState(false);
 
   useEffect(() => {
+    // Skip fetch when the server already passed data
+    if (initialData) return;
+
     const fetchProfile = async () => {
       try {
         setLoading(true);
         const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3100/api/frontend';
         const response = await fetch(`${baseUrl}/users/${userId}`);
-        
+
         if (!response.ok) {
           throw new Error('Profile not found');
         }
-        
+
         const result = await response.json();
         setProfile(result);
       } catch (err) {
@@ -83,7 +86,7 @@ export default function ProfilePage({ serverParams }) {
     if (userId) {
       fetchProfile();
     }
-  }, [userId]);
+  }, [userId, initialData]);
 
   if (loading) {
     return (

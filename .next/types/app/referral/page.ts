@@ -1,8 +1,8 @@
-// File: D:\zaploom_projects\yaaro\app\activities\[activityId]\page.jsx
-import * as entry from '../../../../../app/activities/[activityId]/page.js'
+// File: D:\zaploom_projects\yaaro\app\referral\page.jsx
+import * as entry from '../../../../app/referral/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
-type TEntry = typeof import('../../../../../app/activities/[activityId]/page.js')
+type TEntry = typeof import('../../../../app/referral/page.js')
 
 type SegmentParams<T extends Object = any> = T extends Record<string, any>
   ? { [K in keyof T]: T[K] extends string ? string | string[] | undefined : never }
