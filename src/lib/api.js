@@ -1,11 +1,10 @@
-/** Base URL for public frontend API (includes /frontend/v1). */
-export function getApiBaseUrl() {
-  return (process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/frontend/v1").replace(/\/$/, "");
-}
+const BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3200/frontend/v1';
 
-/** Build a full API URL for a path segment, e.g. `/users/123`. */
+/**
+ * Build a full API URL from a relative path.
+ * e.g. apiUrl('/users/123') → 'http://localhost:3200/frontend/v1/users/123'
+ */
 export function apiUrl(path) {
-  const base = getApiBaseUrl();
-  const suffix = path.startsWith("/") ? path : `/${path}`;
-  return `${base}${suffix}`;
+  return `${BASE_URL}${path}`;
 }

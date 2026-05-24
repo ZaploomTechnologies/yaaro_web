@@ -1,8 +1,6 @@
 import { notFound } from 'next/navigation';
 import ReferralPage from '@/src/views/ReferralPage';
-
-const baseUrl =
-  process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3100/api/frontend';
+import { apiUrl } from '@/src/lib/api';
 
 const REFERRAL_CODE_REGEX = /^[A-Z]{3}\d{4}$/;
 
@@ -19,7 +17,7 @@ export async function generateMetadata({ searchParams }) {
   if (!code) return { title: 'Join Yaaro | Referral' };
 
   try {
-    const res = await fetch(`${baseUrl}/referral/${code}`, { next: { revalidate: 60 } });
+    const res = await fetch(apiUrl(`/referral/${code}`), { next: { revalidate: 60 } });
     if (!res.ok) throw new Error('not found');
     const data = await res.json();
     const title = `${data.fullName} invites you to join Yaaro`;
@@ -45,7 +43,7 @@ export default async function ReferralLandingPage({ searchParams }) {
 
   // Fetch referrer — 404 if code doesn't exist in DB
   try {
-    const res = await fetch(`${baseUrl}/referral/${code}`, { next: { revalidate: 60 } });
+    const res = await fetch(apiUrl(`/referral/${code}`), { next: { revalidate: 60 } });
     if (!res.ok) notFound();
     const data = await res.json();
     return <ReferralPage initialData={data} />;

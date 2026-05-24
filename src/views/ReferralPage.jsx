@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { apiUrl } from '../lib/api';
 
 // Referral code format: exactly 3 uppercase letters + 4 digits (e.g. AAA0000)
 const REFERRAL_CODE_REGEX = /^[A-Z]{3}\d{4}$/;
@@ -115,9 +116,7 @@ export default function ReferralPage({ referralCode: rawCode, initialData }) {
     const fetchReferrer = async () => {
       try {
         setState('loading');
-        const baseUrl =
-          process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3100/api/frontend';
-        const res = await fetch(`${baseUrl}/referral/${code}`, {
+        const res = await fetch(apiUrl(`/referral/${code}`), {
           signal: controller.signal,
         });
 

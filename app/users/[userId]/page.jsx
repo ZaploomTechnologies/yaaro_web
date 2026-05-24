@@ -27,7 +27,7 @@ export default async function UserPage({ params }) {
 
   // Fetch server-side — triggers the 404 page on any failure
   try {
-    const res = await fetch(`${baseUrl}/users/${userId}`, { next: { revalidate: 60 } });
+    const res = await fetch(apiUrl(`/users/${userId}`), { next: { revalidate: 60 } });
     if (!res.ok) notFound();
     const data = await res.json();
     return <ProfilePage initialData={data} />;
