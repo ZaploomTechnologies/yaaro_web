@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 
-export function useScrollReveal(options = {}) {
+export function useScrollReveal() {
   const ref = useRef(null);
 
   useEffect(() => {
@@ -16,7 +16,7 @@ export function useScrollReveal(options = {}) {
           element.classList.remove('opacity-0', 'translate-y-8');
         }
       },
-      { threshold: 0.1, ...options }
+      { threshold: 0.1 }
     );
 
     observer.observe(element);
