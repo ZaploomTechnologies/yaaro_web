@@ -282,7 +282,9 @@ export default function Hero() {
             >
               {/* App Store */}
               <motion.a
-                href="#"
+                href="https://apps.apple.com/in/app/yaaro-fit-run-cycle-workout/id6763996078"
+                target="_blank"
+                rel="noopener noreferrer"
                 whileHover={{ scale: 1.04, y: -2 }}
                 whileTap={{ scale: 0.97 }}
                 className="flex items-center gap-3 bg-black border border-[#333] px-5 py-3.5 rounded-2xl shadow-lg hover:border-primary/40 transition-all duration-200"
@@ -297,7 +299,9 @@ export default function Hero() {
               </motion.a>
 
               <motion.a
-                href="#"
+                href="https://play.google.com/store/apps/details?id=com.yaaro.fit"
+                target="_blank"
+                rel="noopener noreferrer"
                 whileHover={{ scale: 1.04, y: -2 }}
                 whileTap={{ scale: 0.97 }}
                 className="flex items-center gap-3 bg-black border border-[#333] px-5 py-3.5 rounded-2xl shadow-lg hover:border-primary/40 transition-all duration-200"

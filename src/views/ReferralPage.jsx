@@ -38,7 +38,9 @@ function AppStoreButtons() {
     <div className="flex items-center justify-center gap-3 flex-wrap">
       {/* App Store */}
       <motion.a
-        href="#"
+        href="https://apps.apple.com/in/app/yaaro-fit-run-cycle-workout/id6763996078"
+        target="_blank"
+        rel="noopener noreferrer"
         whileTap={{ scale: 0.96 }}
         className="flex items-center gap-2.5 bg-black border border-[#333] rounded-xl px-5 py-3 hover:border-primary/40 transition-colors"
       >
@@ -53,7 +55,9 @@ function AppStoreButtons() {
 
       {/* Google Play */}
       <motion.a
-        href="#"
+        href="https://play.google.com/store/apps/details?id=com.yaaro.fit"
+        target="_blank"
+        rel="noopener noreferrer"
         whileTap={{ scale: 0.96 }}
         className="flex items-center gap-2.5 bg-black border border-[#333] rounded-xl px-5 py-3 hover:border-primary/40 transition-colors"
       >

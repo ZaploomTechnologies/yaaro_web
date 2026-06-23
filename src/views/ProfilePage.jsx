@@ -197,7 +197,9 @@ export default function ProfilePage({ serverParams, initialData }) {
             <div className="flex items-center justify-center gap-3 flex-wrap pt-1">
               {/* App Store */}
               <motion.a
-                href="#"
+                href="https://apps.apple.com/in/app/yaaro-fit-run-cycle-workout/id6763996078"
+                target="_blank"
+                rel="noopener noreferrer"
                 whileTap={{ scale: 0.96 }}
                 className="flex items-center gap-2.5 bg-black border border-[#333] rounded-xl px-4 py-2.5 hover:border-primary/40 transition-colors"
               >
@@ -212,7 +214,9 @@ export default function ProfilePage({ serverParams, initialData }) {
 
               {/* Google Play */}
               <motion.a
-                href="#"
+                href="https://play.google.com/store/apps/details?id=com.yaaro.fit"
+                target="_blank"
+                rel="noopener noreferrer"
                 whileTap={{ scale: 0.96 }}
                 className="flex items-center gap-2.5 bg-black border border-[#333] rounded-xl px-4 py-2.5 hover:border-primary/40 transition-colors"
               >

@@ -187,7 +187,9 @@ function ProfileSidebar({ user }) {
 
       <div className="flex flex-col gap-2">
         <motion.a
-          href="#"
+          href="https://apps.apple.com/in/app/yaaro-fit-run-cycle-workout/id6763996078"
+          target="_blank"
+          rel="noopener noreferrer"
           whileTap={{ scale: 0.97 }}
           className="flex items-center gap-2.5 bg-black border border-[#333] rounded-xl px-4 py-2.5 hover:border-primary/40 transition-colors"
         >
@@ -201,7 +203,9 @@ function ProfileSidebar({ user }) {
         </motion.a>
 
         <motion.a
-          href="#"
+          href="https://play.google.com/store/apps/details?id=com.yaaro.fit"
+          target="_blank"
+          rel="noopener noreferrer"
           whileTap={{ scale: 0.97 }}
           className="flex items-center gap-2.5 bg-black border border-[#333] rounded-xl px-4 py-2.5 hover:border-primary/40 transition-colors"
         >
