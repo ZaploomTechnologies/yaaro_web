@@ -7,12 +7,18 @@ const args = process.argv.slice(2);
 loadProjectEnv(process.cwd());
 applyNextNodeEnv(args[0]);
 
-const nextBin = path.join(process.cwd(), "node_modules", ".bin", process.platform === "win32" ? "next.cmd" : "next");
+const isWindows = process.platform === "win32";
+const nextBin = path.join(process.cwd(), "node_modules", ".bin", isWindows ? "next.cmd" : "next");
 
 const result = spawnSync(nextBin, args, {
   stdio: "inherit",
   env: process.env,
-  shell: process.platform === "win32",
+  // Node >=18.20.2/20.12.2 refuses to spawn .cmd/.bat files without a shell.
+  shell: isWindows,
 });
+
+if (result.error) {
+  console.error(result.error);
+}
 
 process.exit(result.status ?? 1);
