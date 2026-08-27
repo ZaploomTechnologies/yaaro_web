@@ -1,4 +1,5 @@
 import { Inter } from 'next/font/google';
+import SmoothScrollProvider from '@/src/components/SmoothScrollProvider';
 import './globals.css';
 
 const inter = Inter({
@@ -31,7 +32,9 @@ export const viewport = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={inter.className}>
-      <body suppressHydrationWarning>{children}</body>
+      <body suppressHydrationWarning>
+        <SmoothScrollProvider>{children}</SmoothScrollProvider>
+      </body>
     </html>
   );
 }

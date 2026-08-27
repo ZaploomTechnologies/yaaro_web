@@ -9,10 +9,10 @@ export default function ActivityCard({ activity, index }) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      viewport={{ once: true }}
+      initial={{ opacity: 0, y: 60, scale: 0.88 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ type: 'spring', stiffness: 260, damping: 17, mass: 0.7, delay: index * 0.08 }}
+      viewport={{ once: true, amount: 0.3 }}
       whileHover={{ scale: 1.03, y: -4 }}
       className="relative group overflow-hidden rounded-2xl h-72"
     >

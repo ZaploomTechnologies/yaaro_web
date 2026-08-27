@@ -1,4 +1,5 @@
 export const NAV_LINKS = [
+  { label: 'Home', href: '#home' },
   { label: 'Activities', href: '#activities' },
   { label: 'Features', href: '#features' },
   { label: 'Why Yaaro', href: '#why-yaaro' },

@@ -1,6 +1,8 @@
 import Navbar from '@/src/components/Navbar';
 import Footer from '@/src/components/Footer';
-import Hero from '@/src/sections/Hero';
+import HeroSnapStack from '@/src/components/HeroSnapStack';
+import MoveHealth from '@/src/sections/MoveHealth';
+import AchieveGoals from '@/src/sections/AchieveGoals';
 import Activities from '@/src/sections/Activities';
 import Features from '@/src/sections/Features';
 import WhyYaaro from '@/src/sections/WhyYaaro';
@@ -15,37 +17,37 @@ export const metadata = {
 
 export default function HomePage() {
   return (
-    <div className="bg-surface-bg min-h-screen overflow-x-hidden overflow-y-visible">
+    <div className="bg-surface-bg min-h-screen">
       <ScrollToTop />
       <Navbar />
       <main>
-        <Hero />
+        <HeroSnapStack>
+          <MoveHealth />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-        </div>
+          <AchieveGoals />
 
-        <Activities />
+          <Activities />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-        </div>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+          </div>
 
-        <Features />
+          <Features />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-        </div>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+          </div>
 
-        <WhyYaaro />
+          <WhyYaaro />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-        </div>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+          </div>
 
-        <AppPreview />
+          <AppPreview />
 
-        <CTASection />
+          <CTASection />
+        </HeroSnapStack>
       </main>
       <Footer />
     </div>

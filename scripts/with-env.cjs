@@ -12,6 +12,7 @@ const nextBin = path.join(process.cwd(), "node_modules", ".bin", process.platfor
 const result = spawnSync(nextBin, args, {
   stdio: "inherit",
   env: process.env,
+  shell: process.platform === "win32",
 });
 
 process.exit(result.status ?? 1);

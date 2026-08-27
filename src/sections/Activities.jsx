@@ -13,10 +13,10 @@ export default function Activities() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         {/* Section Header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
+          initial={{ opacity: 0, y: 50, scale: 0.9 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ type: 'spring', stiffness: 260, damping: 18, mass: 0.8 }}
+          viewport={{ once: true, amount: 0.3 }}
           className="text-center mb-8 md:mb-14"
         >
           <span className="inline-block text-xs font-semibold text-primary bg-primary/10 border border-primary/20 px-4 py-1.5 rounded-full mb-4 tracking-wide uppercase">
@@ -44,10 +44,10 @@ export default function Activities() {
 
         {/* Bottom CTA */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          viewport={{ once: true }}
+          initial={{ opacity: 0, y: 30, scale: 0.92 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ type: 'spring', stiffness: 260, damping: 18, mass: 0.8, delay: 0.2 }}
+          viewport={{ once: true, amount: 0.3 }}
           className="text-center mt-10"
         >
           <p className="text-surface-secondary text-sm">

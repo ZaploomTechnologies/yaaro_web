@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { NAV_LINKS } from '../constants';
 
@@ -8,7 +9,9 @@ import { NAV_LINKS } from '../constants';
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [activeLink, setActiveLink] = useState('');
+  const [activeLink, setActiveLink] = useState('#home');
+  const pathname = usePathname();
+  const onLightHero = pathname === '/' && !scrolled;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -32,51 +35,72 @@ export default function Navbar() {
       transition={{ duration: 0.6, ease: 'easeOut' }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-surface-bg/90 backdrop-blur-xl border-b border-border shadow-lg'
+          ? 'bg-surface-bg border-b border-border'
           : 'bg-transparent'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 py-3 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 md:h-18">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div
+          className={`relative flex items-center transition-all duration-300 ${
+            scrolled ? 'h-14 justify-center' : 'h-16 md:h-18 justify-between'
+          }`}
+        >
           {/* Logo */}
-          <a href="#" className="flex items-center gap-2 group">
-            <img src="/Yaaro-Logo.png" alt="" width={80} />
+          <a
+            href="#home"
+            onClick={(e) => handleNavClick(e, '#home')}
+            className="flex items-center gap-2 group"
+          >
+            <img
+              src="/Yaaro-Logo.png"
+              alt=""
+              width={scrolled ? 64 : 80}
+              className="transition-all duration-300"
+            />
           </a>
 
-          {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-1">
+          {/* Desktop Nav — hidden once the header goes flat */}
+          <div className={`items-center gap-1 ${scrolled ? 'hidden' : 'hidden md:flex'}`}>
             {NAV_LINKS.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
                 onClick={(e) => handleNavClick(e, link.href)}
-                className={`px-4 py-2 rounded-lg text-md font-medium transition-all duration-200 ${
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
                   activeLink === link.href
-                    ? 'text-primary bg-primary/10'
-                    : 'text-surface-secondary hover:text-surface-text hover:bg-surface-card'
+                    ? onLightHero
+                      ? 'text-[#14140F] bg-white shadow-sm'
+                      : 'text-primary bg-primary/10'
+                    : onLightHero
+                      ? 'text-[#6E6A5D] hover:text-[#14140F] hover:bg-black/5'
+                      : 'text-surface-secondary hover:text-surface-text hover:bg-surface-card'
                 }`}
               >
                 {link.label}
               </a>
             ))}
           </div>
-          {/* Mobile menu button */}
+          {/* Menu button — mobile always, or any width once flat */}
           <button
-            className="md:hidden flex flex-col gap-1.5 p-2 rounded-lg hover:bg-surface-card transition-colors"
+            className={`flex-col gap-1.5 p-2 rounded-lg transition-colors ${
+              scrolled
+                ? 'flex absolute right-4 hover:bg-surface-card'
+                : `flex md:hidden ${onLightHero ? 'hover:bg-black/5' : 'hover:bg-surface-card'}`
+            }`}
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Toggle menu"
           >
             <motion.span
               animate={menuOpen ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }}
-              className="block w-6 h-0.5 bg-surface-text transition-transform origin-center"
+              className={`block w-6 h-0.5 transition-transform origin-center ${onLightHero ? 'bg-[#14140F]' : 'bg-surface-text'}`}
             />
             <motion.span
               animate={menuOpen ? { opacity: 0 } : { opacity: 1 }}
-              className="block w-6 h-0.5 bg-surface-text"
+              className={`block w-6 h-0.5 ${onLightHero ? 'bg-[#14140F]' : 'bg-surface-text'}`}
             />
             <motion.span
               animate={menuOpen ? { rotate: -45, y: -8 } : { rotate: 0, y: 0 }}
-              className="block w-6 h-0.5 bg-surface-text transition-transform origin-center"
+              className={`block w-6 h-0.5 transition-transform origin-center ${onLightHero ? 'bg-[#14140F]' : 'bg-surface-text'}`}
             />
           </button>
         </div>
@@ -90,7 +114,7 @@ export default function Navbar() {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.25 }}
-            className="md:hidden bg-surface-bg/95 backdrop-blur-xl border-t border-border overflow-hidden"
+            className={`${scrolled ? '' : 'md:hidden'} bg-surface-bg/95 backdrop-blur-xl border-t border-border overflow-hidden`}
           >
             <div className="px-4 py-4 space-y-1">
               {NAV_LINKS.map((link) => (
