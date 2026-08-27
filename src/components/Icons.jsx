@@ -317,6 +317,22 @@ export function AlertIcon({ className }) {
   );
 }
 
+export function ArrowLeftIcon({ className }) {
+  return (
+    <Icon className={className} strokeWidth={2}>
+      <path d="M19 12H5M11 18l-6-6 6-6" />
+    </Icon>
+  );
+}
+
+export function ArrowRightIcon({ className }) {
+  return (
+    <Icon className={className} strokeWidth={2}>
+      <path d="M5 12h14M13 6l6 6-6 6" />
+    </Icon>
+  );
+}
+
 // Map from string key → component (used in constants data)
 export const ICONS = {
   run: RunIcon,

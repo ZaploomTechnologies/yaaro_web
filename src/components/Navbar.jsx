@@ -10,6 +10,9 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeLink, setActiveLink] = useState('#home');
+  // A pinned section (e.g. MoveHealth) can ask the navbar to go transparent
+  // and drop its menu icon while it owns the viewport.
+  const [navOverlay, setNavOverlay] = useState(false);
   const pathname = usePathname();
   const onLightHero = pathname === '/' && !scrolled;
 
@@ -17,6 +20,15 @@ export default function Navbar() {
     const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  useEffect(() => {
+    const onOverlay = (e) => {
+      setNavOverlay(!!e.detail);
+      if (e.detail) setMenuOpen(false);
+    };
+    window.addEventListener('yaaro:navoverlay', onOverlay);
+    return () => window.removeEventListener('yaaro:navoverlay', onOverlay);
   }, []);
 
   const handleNavClick = (e, href) => {
@@ -34,7 +46,7 @@ export default function Navbar() {
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
+        scrolled && !navOverlay
           ? 'bg-surface-bg border-b border-border'
           : 'bg-transparent'
       }`}
@@ -80,12 +92,15 @@ export default function Navbar() {
               </a>
             ))}
           </div>
-          {/* Menu button — mobile always, or any width once flat */}
+          {/* Menu button — mobile always, or any width once flat; hidden
+              while a pinned section owns the viewport */}
           <button
             className={`flex-col gap-1.5 p-2 rounded-lg transition-colors ${
-              scrolled
-                ? 'flex absolute right-4 hover:bg-surface-card'
-                : `flex md:hidden ${onLightHero ? 'hover:bg-black/5' : 'hover:bg-surface-card'}`
+              navOverlay
+                ? 'hidden'
+                : scrolled
+                  ? 'flex absolute right-4 hover:bg-surface-card'
+                  : `flex md:hidden ${onLightHero ? 'hover:bg-black/5' : 'hover:bg-surface-card'}`
             }`}
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Toggle menu"
