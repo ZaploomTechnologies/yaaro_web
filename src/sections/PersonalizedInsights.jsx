@@ -255,7 +255,7 @@ export default function PersonalizedInsights() {
     <section
       ref={sectionRef}
       id="insights"
-      className="relative bg-[#F7F6F2] py-16 md:py-24 overflow-hidden"
+      className="relative bg-[#F7F6F2] py-14 md:py-20 overflow-hidden"
       aria-label="Personalized insights and recommendations"
     >
       {/* dotted texture — matches the neighbouring light sections */}
@@ -302,7 +302,7 @@ export default function PersonalizedInsights() {
           <div>
             <div
               ref={slot0Ref}
-              className="rounded-[1.75rem] bg-[#14140F]/[0.04] h-[22rem] sm:h-[26rem] lg:h-[29rem]"
+              className="rounded-[1.75rem] bg-[#14140F]/[0.04] h-[18rem] sm:h-[22rem] lg:h-[24rem]"
             />
             <p
               ref={captionRef}
@@ -320,12 +320,12 @@ export default function PersonalizedInsights() {
             </span>
             <h2
               data-reveal
-              className="relative z-20 text-4xl sm:text-5xl font-extrabold text-[#14140F] leading-[1.05] tracking-tight mb-8 max-w-lg"
+              className="relative z-20 text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#14140F] leading-[1.05] tracking-tight mb-6 max-w-lg"
             >
               Personalized Insights and Recommendations
             </h2>
 
-            <div className="relative z-20 flex items-start gap-6 mb-10">
+            <div className="relative z-20 flex items-start gap-6 mb-8">
               <div ref={controlsRef} className="flex items-center gap-3 shrink-0">
                 <button
                   type="button"
@@ -352,10 +352,10 @@ export default function PersonalizedInsights() {
             </div>
 
             <div className="hidden md:grid grid-cols-2 gap-5">
-              <div ref={slot1Ref} className="rounded-[1.75rem] bg-[#14140F]/[0.04] h-[18rem] sm:h-[22rem]" />
+              <div ref={slot1Ref} className="rounded-[1.75rem] bg-[#14140F]/[0.04] h-[14rem] sm:h-[17rem]" />
               <div
                 ref={slot2Ref}
-                className="rounded-[1.75rem] bg-[#14140F]/[0.04] h-[14rem] sm:h-[17rem] self-end"
+                className="rounded-[1.75rem] bg-[#14140F]/[0.04] h-[11rem] sm:h-[13rem] self-end"
               />
             </div>
           </div>
