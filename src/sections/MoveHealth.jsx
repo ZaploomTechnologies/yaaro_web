@@ -11,10 +11,9 @@ const useIsoLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : use
 /*  Tuning                                                                     */
 /* -------------------------------------------------------------------------- */
 
-// One scene→scene crossfade, in seconds — short enough to fit inside the
-// autoplay budget below (hold + crossfade ≈ 1s per scene).
-const CROSSFADE_DURATION = 0.35;
-const AUTOPLAY_HOLD = 0.65;
+// One scene→scene crossfade, in seconds — hold + crossfade ≈ 1.4s per scene.
+const CROSSFADE_DURATION = 0.5;
+const AUTOPLAY_HOLD = 0.9;
 const STEP_EASE = 'power2.inOut';
 
 // Cinematic settle timing — the scene the section arrives on eases in from a
@@ -134,7 +133,9 @@ const LAYOUTS = [
  *
  * A paused GSAP timeline crossfades between five scenes; a `playhead` proxy
  * is tweened and written to the timeline's `progress()` every frame — one
- * ~0.35s crossfade per step, looping forever. Autoplay only runs while this
+ * ~0.5s crossfade per step (holding ~0.9s between), looping forever with a
+ * genuine forward wrap from the last scene back to the first (not a
+ * backward jump). Autoplay only runs while this
  * section is the active panel in the surrounding `SectionSnapStack` (see
  * `active` prop) — it starts the moment the section comes on-stage and stops
  * the instant it's scrolled away, so it never advances off-screen. Clicking a
@@ -198,7 +199,7 @@ export default function MoveHealth({ active }) {
           ? Array.from(progressRef.current.querySelectorAll('[data-seg-fill]'))
           : [];
         const updateProgress = (p) => {
-          const pos = p * (N - 1);
+          const pos = p * N;
           for (let i = 0; i < N; i++) {
             const local = gsap.utils.clamp(0, 1, pos - (i - 1));
             if (segFills[i]) segFills[i].style.transform = `scaleX(${local})`;
@@ -206,6 +207,10 @@ export default function MoveHealth({ active }) {
         };
 
         // --- The paused master timeline (1 unit per transition) ---------
+        // N transitions, not N-1: the last one is a genuine Dance→Walking
+        // crossfade, giving the loop a real forward wrap instead of ending
+        // and needing to jump backward through every other scene to get
+        // back to the start.
         const TR = 1;
         const tl = gsap.timeline({
           paused: true,
@@ -213,11 +218,24 @@ export default function MoveHealth({ active }) {
         });
         tl.addLabel('s0', 0);
 
-        for (let i = 0; i < N - 1; i++) {
+        for (let i = 0; i < N; i++) {
           const start = i * TR;
           const end = start + TR;
           const cur = parts[i];
-          const nxt = parts[i + 1];
+          const nxt = parts[(i + 1) % N];
+          const isWrap = i === N - 1;
+
+          // The wrap segment's incoming scene (Walking) was already tweened
+          // "exited" once, back in segment 0 (as that segment's own
+          // outgoing scene) — reset it to the same off-stage-right pose
+          // every other scene enters from, so it comes in consistently
+          // instead of sliding in from the wrong side.
+          if (isWrap) {
+            tl.set(nxt.big, { xPercent: 28, opacity: 0, scale: 0.96 }, start);
+            tl.set(nxt.bigImg, { scale: 1.12 }, start);
+            tl.set(nxt.support, { xPercent: 46, yPercent: 10, opacity: 0, scale: 0.9 }, start);
+            tl.set(nxt.cap, { x: 40, opacity: 0 }, start);
+          }
 
           // Outgoing → zooms out small, drifts left, fades. Layers differ.
           tl.to(cur.big, { xPercent: -16, scale: EXIT_SCALE, opacity: 0, ease: 'power1.in', duration: TR * 0.92 }, start)
@@ -234,7 +252,7 @@ export default function MoveHealth({ active }) {
             .to(nxt.support, { xPercent: 0, yPercent: 0, opacity: 1, scale: 1, ease: 'power3.out', duration: end - (io + TR * 0.06) }, io + TR * 0.06)
             .to(nxt.cap, { x: 0, opacity: 1, ease: 'power2.out', duration: end - (io + TR * 0.12) }, io + TR * 0.12);
 
-          tl.addLabel('s' + (i + 1), end);
+          if (!isWrap) tl.addLabel('s' + (i + 1), end);
         }
 
         const TOTAL = tl.totalDuration();
@@ -313,22 +331,33 @@ export default function MoveHealth({ active }) {
         const queueNext = () => {
           stopAutoplay();
           autoplayTimer = gsap.delayedCall(AUTOPLAY_HOLD, () => {
-            animateToStep((stepIndex + 1) % N);
+            if (stepIndex < N - 1) animateToStep(stepIndex + 1);
+            else animateToStep(0, { wrap: true });
           });
         };
 
-        const animateToStep = (idx) => {
+        // `wrap: true` drives the playhead through the dedicated wrap
+        // segment (Dance → Walking, forward) to raw progress 1 instead of
+        // jumping back to progressOf(0)=0, which would scrub the timeline
+        // backward through every other scene. Progress 1 and 0 render
+        // identically (both = Walking settled), so snapping back to 0 right
+        // after is an invisible reset, ready for the next lap.
+        const animateToStep = (idx, { wrap = false } = {}) => {
           setStep(idx);
           stepTween?.kill();
           stopAutoplay();
           stepTween = gsap.to(playhead, {
-            p: progressOf(idx),
+            p: wrap ? 1 : progressOf(idx),
             duration: CROSSFADE_DURATION,
             ease: STEP_EASE,
             overwrite: true,
             onUpdate: render,
             onComplete: () => {
               stepTween = null;
+              if (wrap) {
+                playhead.p = 0;
+                render();
+              }
               if (activeRef.current) queueNext();
             },
           });
