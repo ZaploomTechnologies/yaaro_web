@@ -10,11 +10,12 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeLink, setActiveLink] = useState('#home');
-  // A pinned section (e.g. MoveHealth) can ask the navbar to go transparent
-  // and drop its menu icon while it owns the viewport.
-  const [navOverlay, setNavOverlay] = useState(false);
   const pathname = usePathname();
-  const onLightHero = pathname === '/' && !scrolled;
+  // The home page is light-themed end to end (hero through footer), so the
+  // navbar stays in its dark-on-light styling and stays transparent the
+  // whole way down — not just during the unscrolled hero moment.
+  const isHome = pathname === '/';
+  const onLightHero = isHome;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -22,22 +23,11 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  useEffect(() => {
-    const onOverlay = (e) => {
-      setNavOverlay(!!e.detail);
-      if (e.detail) setMenuOpen(false);
-    };
-    window.addEventListener('yaaro:navoverlay', onOverlay);
-    return () => window.removeEventListener('yaaro:navoverlay', onOverlay);
-  }, []);
-
   const handleNavClick = (e, href) => {
     e.preventDefault();
     setActiveLink(href);
     setMenuOpen(false);
-    setTimeout(() => {
-      window.location.hash = href;
-    }, 300);
+    window.dispatchEvent(new CustomEvent('yaaro:snapjump', { detail: { id: href.replace('#', '') } }));
   };
 
   return (
@@ -46,7 +36,7 @@ export default function Navbar() {
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled && !navOverlay
+        !isHome && scrolled
           ? 'bg-surface-bg border-b border-border'
           : 'bg-transparent'
       }`}
@@ -66,7 +56,7 @@ export default function Navbar() {
             <img
               src="/Yaaro-Logo.png"
               alt=""
-              width={scrolled ? 64 : 80}
+              width={92}
               className="transition-all duration-300"
             />
           </a>
@@ -92,15 +82,16 @@ export default function Navbar() {
               </a>
             ))}
           </div>
-          {/* Menu button — mobile always, or any width once flat; hidden
-              while a pinned section owns the viewport */}
+          {/* Menu button — on the home page it's mobile-only at every scroll
+              position (desktop never gets a hamburger there); other pages
+              keep the desktop fallback once the header goes flat. */}
           <button
             className={`flex-col gap-1.5 p-2 rounded-lg transition-colors ${
-              navOverlay
-                ? 'hidden'
+              isHome
+                ? `flex md:hidden ${scrolled ? 'absolute right-4' : ''} hover:bg-black/5`
                 : scrolled
                   ? 'flex absolute right-4 hover:bg-surface-card'
-                  : `flex md:hidden ${onLightHero ? 'hover:bg-black/5' : 'hover:bg-surface-card'}`
+                  : 'flex md:hidden hover:bg-surface-card'
             }`}
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Toggle menu"
@@ -129,7 +120,11 @@ export default function Navbar() {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.25 }}
-            className={`${scrolled ? '' : 'md:hidden'} bg-surface-bg/95 backdrop-blur-xl border-t border-border overflow-hidden`}
+            className={`overflow-hidden ${isHome || !scrolled ? 'md:hidden' : ''} ${
+              isHome
+                ? 'bg-[#EDEDE8]/95 backdrop-blur-xl border-t border-[#14140F]/10'
+                : 'bg-surface-bg/95 backdrop-blur-xl border-t border-border'
+            }`}
           >
             <div className="px-4 py-4 space-y-1">
               {NAV_LINKS.map((link) => (
@@ -137,7 +132,11 @@ export default function Navbar() {
                   key={link.href}
                   href={link.href}
                   onClick={(e) => handleNavClick(e, link.href)}
-                  className="block px-4 py-3 rounded-xl text-surface-secondary hover:text-surface-text hover:bg-surface-card transition-all font-medium"
+                  className={`block px-4 py-3 rounded-xl transition-all font-medium ${
+                    isHome
+                      ? 'text-[#6E6A5D] hover:text-[#14140F] hover:bg-black/5'
+                      : 'text-surface-secondary hover:text-surface-text hover:bg-surface-card'
+                  }`}
                 >
                   {link.label}
                 </a>

@@ -3,10 +3,11 @@
 import { motion } from 'framer-motion';
 import { StarIcon } from '../components/Icons';
 
-const reveal = (delay = 0) => ({
+// Reveals on `active` (this panel becoming on-stage in SectionSnapStack)
+// instead of native scroll-into-view.
+const reveal = (active, delay = 0) => ({
   initial: { opacity: 0, y: 40 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, amount: 0.3 },
+  animate: active ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 },
   transition: { duration: 0.6, ease: 'easeOut', delay },
 });
 
@@ -183,22 +184,22 @@ const STEPS = [
   {
     n: '02',
     title: 'Create & Personalize',
-    copy: 'Answer a few quick questions and Yaaro tailors goals and plans to you.',
+    copy: 'Set up your profile, pick your activities and set a weekly goal — takes less than a minute.',
     screen: <PersonalizeScreen />,
   },
   {
     n: '03',
-    title: 'Track & Move',
-    copy: 'Log activity, watch your rings close, and build streaks that stick.',
+    title: 'Track, Earn & Redeem',
+    copy: 'Log activity, earn points on every session and redeem them for real rewards.',
     screen: <TrackScreen />,
   },
 ];
 
-export default function GettingStarted() {
+export default function GettingStarted({ active }) {
   return (
     <section
       id="getting-started"
-      className="relative bg-[#F7F6F2] py-16 md:py-24 overflow-hidden"
+      className="relative bg-[#F7F6F2] h-full flex flex-col justify-center py-16 md:py-24 overflow-hidden"
       aria-label="Getting started with Yaaro"
     >
       <div
@@ -214,7 +215,7 @@ export default function GettingStarted() {
           {/* Left: title + steps */}
           <div>
             <motion.h2
-              {...reveal()}
+              {...reveal(active)}
               className="text-3xl sm:text-4xl lg:text-[2.75rem] font-extrabold leading-tight tracking-tight text-[#14140F] mb-8"
             >
               Getting Started
@@ -224,7 +225,7 @@ export default function GettingStarted() {
 
             <div className="space-y-6 max-w-md">
               {STEPS.map((step, i) => (
-                <motion.div key={step.n} {...reveal(0.1 + i * 0.1)} className="flex gap-4">
+                <motion.div key={step.n} {...reveal(active, 0.1 + i * 0.1)} className="flex gap-4">
                   <span className="text-sm font-semibold tracking-[0.2em] text-[#8A8574] pt-1">
                     {step.n}
                   </span>
@@ -239,7 +240,7 @@ export default function GettingStarted() {
 
           {/* Right: 3 phones */}
           <motion.div
-            {...reveal(0.2)}
+            {...reveal(active, 0.2)}
             className="flex justify-center lg:justify-end items-center overflow-x-auto lg:overflow-visible pb-4 lg:pb-0"
           >
             <div className="flex flex-shrink-0 -space-x-14 sm:-space-x-16">

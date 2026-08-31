@@ -3,18 +3,19 @@
 import { motion } from 'framer-motion';
 import { MapPinIcon, FlameIcon } from '../components/Icons';
 
-const reveal = (delay = 0) => ({
+// Reveals on `active` (this panel becoming on-stage in SectionSnapStack)
+// instead of native scroll-into-view.
+const reveal = (active, delay = 0) => ({
   initial: { opacity: 0, y: 40 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, amount: 0.3 },
+  animate: active ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 },
   transition: { duration: 0.6, ease: 'easeOut', delay },
 });
 
 const MACROS = [
-  { label: 'Protein', value: '128 g', pct: 82, color: '#D0EA59' },
-  { label: 'Carbs', value: '240 g', pct: 64, color: '#3b82f6' },
-  { label: 'Fat', value: '56 g', pct: 40, color: '#f97316' },
-  { label: 'Calories', value: '2,180', pct: 73, color: '#14140F' },
+  { label: 'Running', value: '+320 pts', pct: 82, color: '#D0EA59' },
+  { label: 'Cycling', value: '+180 pts', pct: 64, color: '#3b82f6' },
+  { label: 'Workout', value: '+140 pts', pct: 40, color: '#f97316' },
+  { label: 'Challenges', value: '+500 pts', pct: 73, color: '#14140F' },
 ];
 
 const ANALYSIS_BARS = [38, 62, 45, 80, 55, 92, 70];
@@ -23,7 +24,7 @@ function RouteCard() {
   return (
     <div className="rounded-[1.5rem] bg-white border border-[#14140F]/[0.06] p-5 shadow-[0_20px_40px_-24px_rgba(20,20,15,0.25)]">
       <p className="text-[13px] font-bold text-[#14140F] leading-snug mb-3 max-w-[12rem]">
-        Commence at any location. Reach any objective.
+        Start anywhere. Every route counts.
       </p>
       <div className="relative h-20 rounded-xl bg-[#F1F0EA] overflow-hidden">
         <svg viewBox="0 0 200 80" className="absolute inset-0 w-full h-full" fill="none">
@@ -61,7 +62,7 @@ function AnalysisCard() {
   return (
     <div className="rounded-[1.5rem] bg-white border border-[#14140F]/[0.06] p-5 shadow-[0_20px_40px_-24px_rgba(20,20,15,0.25)]">
       <div className="flex items-center justify-between mb-3">
-        <p className="text-[13px] font-bold text-[#14140F]">Calorie Analysis</p>
+        <p className="text-[13px] font-bold text-[#14140F]">Activity Analysis</p>
         <span className="text-[11px] font-semibold text-[#14140F] bg-primary rounded-full px-2 py-0.5">
           +20%
         </span>
@@ -79,18 +80,18 @@ function AnalysisCard() {
         ))}
       </div>
       <p className="text-[11px] text-[#6E6A5D] leading-snug">
-        Keep it up — you&apos;ve gained 2&nbsp;kg of lean mass in just 6 months.
+        Nice work — you&apos;re up 20% on activities logged versus last month.
       </p>
     </div>
   );
 }
 
-export default function SmarterTraining() {
+export default function SmarterTraining({ active }) {
   return (
     <section
       id="smarter-training"
-      className="relative bg-[#F7F6F2] py-16 md:py-24 overflow-hidden"
-      aria-label="Smarter, data-driven training"
+      className="relative bg-[#F7F6F2] h-full flex flex-col justify-center py-16 md:py-24 overflow-hidden"
+      aria-label="Earn rewards for every activity"
     >
       <div
         className="absolute inset-0 opacity-[0.35] pointer-events-none"
@@ -103,7 +104,7 @@ export default function SmarterTraining() {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* ---------- Left: overlapping data cards ---------- */}
-          <motion.div {...reveal()} className="relative">
+          <motion.div {...reveal(active)} className="relative">
             <div className="grid grid-cols-2 gap-4 sm:gap-5">
               <div className="col-span-2">
                 <RouteCard />
@@ -122,22 +123,22 @@ export default function SmarterTraining() {
           </motion.div>
 
           {/* ---------- Right: heading + macro breakdown ---------- */}
-          <motion.div {...reveal(0.15)}>
+          <motion.div {...reveal(active, 0.15)}>
             <span className="block text-xs font-semibold tracking-[0.2em] uppercase text-[#8A8574] mb-3">
-              Data-Driven Fitness for Everyone
+              Rewards That Actually Mean Something
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-[2.75rem] font-extrabold leading-[1.05] tracking-tight text-[#14140F] mb-5">
-              Training For Every
+              Every Activity
               <br />
-              Body and Mind
+              Earns You Points
             </h2>
             <p className="text-[#6E6A5D] text-base leading-relaxed mb-8 max-w-md">
-              Yaaro reads your real activity, fuel and recovery — then adapts every
-              plan to the person actually doing the work.
+              Yaaro turns every run, ride and rep into points — redeem them for
+              protein vouchers, fitness bands and gear from brands you already love.
             </p>
 
             <div className="rounded-[1.5rem] bg-white border border-[#14140F]/[0.06] p-6 shadow-[0_24px_50px_-30px_rgba(20,20,15,0.3)] max-w-md">
-              <p className="text-sm font-bold text-[#14140F] mb-4">Today&apos;s Balance</p>
+              <p className="text-sm font-bold text-[#14140F] mb-4">Points This Week</p>
               <div className="space-y-4">
                 {MACROS.map((m) => (
                   <div key={m.label}>
@@ -150,8 +151,7 @@ export default function SmarterTraining() {
                         className="h-full rounded-full"
                         style={{ background: m.color }}
                         initial={{ width: 0 }}
-                        whileInView={{ width: `${m.pct}%` }}
-                        viewport={{ once: true }}
+                        animate={{ width: active ? `${m.pct}%` : 0 }}
                         transition={{ duration: 0.8, ease: 'easeOut', delay: 0.2 }}
                       />
                     </div>
@@ -162,6 +162,10 @@ export default function SmarterTraining() {
 
             <a
               href="#download"
+              onClick={(e) => {
+                e.preventDefault();
+                window.dispatchEvent(new CustomEvent('yaaro:snapjump', { detail: { id: 'download' } }));
+              }}
               className="inline-flex items-center justify-center bg-primary text-[#14140F] font-semibold text-base px-8 py-3.5 rounded-full mt-8 shadow-[0_10px_30px_-10px_rgba(208,234,89,0.6)] hover:-translate-y-0.5 transition-all duration-200"
             >
               Get Started

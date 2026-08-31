@@ -74,7 +74,7 @@ export default function TermsPage() {
           <li>Yearly Plan: ₹999/year</li>
         </ul>
 
-        <div className="rounded-xl border border-primary/20 bg-primary/5 px-4 py-3 text-sm text-surface-secondary mb-4">
+        <div className="rounded-xl border border-primary/25 bg-primary/10 px-4 py-3 text-sm text-[#6E6A5D] mb-4">
           Payments are processed through app stores (Google Play / Apple App Store). Subscription
           terms, billing, and cancellations are governed by their policies.
         </div>
@@ -116,7 +116,7 @@ export default function TermsPage() {
       <LegalSection title="13. Privacy" step="Section 13">
         <p>
           Your use of the app is also governed by our{' '}
-          <Link href="/privacy-policy" className="text-primary hover:underline">
+          <Link href="/privacy-policy" className="text-[#14140F] font-semibold hover:underline">
             Privacy Policy
           </Link>
           .

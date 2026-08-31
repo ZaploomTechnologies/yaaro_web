@@ -62,6 +62,18 @@
     display: none;
   }
 
+  /* Skip layout/paint/compositing work for a snap-stack panel while it's not
+     near the viewport, without unmounting it — every one of the 7 panels
+     stays mounted forever, so paint cost otherwise accumulates the further
+     down the page you go. `content-visibility: auto` only takes effect when
+     the browser has already decided the element is offscreen; the panel
+     currently on stage renders exactly as normal. `contain-intrinsic-size`
+     matches the panel's real fixed height so nothing shifts when it toggles. */
+  .snap-panel {
+    content-visibility: auto;
+    contain-intrinsic-size: 100% 100svh;
+  }
+
   .wheel-spin {
     transform-box: fill-box;
     transform-origin: center;

@@ -15,7 +15,7 @@ export default function PrivacyPolicy() {
       </LegalSection>
 
       <LegalSection title="2. Information We Collect" step="Section 2">
-        <h3 className="text-surface-text font-semibold">2.1 Personal Information</h3>
+        <h3 className="text-[#14140F] font-semibold">2.1 Personal Information</h3>
         <ul className="list-disc pl-5 space-y-1">
           <li>Name</li>
           <li>Email address</li>
@@ -23,7 +23,7 @@ export default function PrivacyPolicy() {
           <li>Location (city-level or user-provided)</li>
         </ul>
 
-        <h3 className="text-surface-text font-semibold mt-4">2.2 Fitness & Activity Data</h3>
+        <h3 className="text-[#14140F] font-semibold mt-4">2.2 Fitness & Activity Data</h3>
         <ul className="list-disc pl-5 space-y-1">
           <li>Workout logs (sets, reps, weights)</li>
           <li>Running, walking, cycling activity data</li>
@@ -32,24 +32,24 @@ export default function PrivacyPolicy() {
           <li>Body measurements (optional)</li>
         </ul>
 
-        <h3 className="text-surface-text font-semibold mt-4">2.3 Location Data</h3>
+        <h3 className="text-[#14140F] font-semibold mt-4">2.3 Location Data</h3>
         <p>We collect location data to enable:</p>
         <ul className="list-disc pl-5 space-y-1">
           <li>GPS-based activity tracking</li>
           <li>Route mapping</li>
           <li>Territory capture features</li>
         </ul>
-        <div className="rounded-xl border border-primary/20 bg-primary/5 px-4 py-3 text-sm text-surface-secondary mt-3">
+        <div className="rounded-xl border border-primary/25 bg-primary/10 px-4 py-3 text-sm text-[#6E6A5D] mt-3">
           Background location is accessed only during active activity tracking sessions.
         </div>
 
-        <h3 className="text-surface-text font-semibold mt-4">2.4 Media & Files</h3>
+        <h3 className="text-[#14140F] font-semibold mt-4">2.4 Media & Files</h3>
         <ul className="list-disc pl-5 space-y-1">
           <li>Images uploaded to posts</li>
           <li>Photos selected from device</li>
         </ul>
 
-        <h3 className="text-surface-text font-semibold mt-4">2.5 Social Data</h3>
+        <h3 className="text-[#14140F] font-semibold mt-4">2.5 Social Data</h3>
         <ul className="list-disc pl-5 space-y-1">
           <li>Followers and following</li>
           <li>Posts, likes, interactions</li>
@@ -57,7 +57,7 @@ export default function PrivacyPolicy() {
           <li>User search activity</li>
         </ul>
 
-        <h3 className="text-surface-text font-semibold mt-4">2.6 Device & Usage Data</h3>
+        <h3 className="text-[#14140F] font-semibold mt-4">2.6 Device & Usage Data</h3>
         <ul className="list-disc pl-5 space-y-1">
           <li>Device type and OS</li>
           <li>App usage behavior</li>
@@ -66,19 +66,19 @@ export default function PrivacyPolicy() {
       </LegalSection>
 
       <LegalSection title="3. Permissions We Use" step="Section 3">
-        <h4 className="text-surface-text font-semibold">Camera</h4>
+        <h4 className="text-[#14140F] font-semibold">Camera</h4>
         <p>Used to capture photos for profile and activity posts.</p>
 
-        <h4 className="text-surface-text font-semibold mt-4">Storage / Media</h4>
+        <h4 className="text-[#14140F] font-semibold mt-4">Storage / Media</h4>
         <p>Used to upload images from your device.</p>
 
-        <h4 className="text-surface-text font-semibold mt-4">Location (Foreground & Background)</h4>
+        <h4 className="text-[#14140F] font-semibold mt-4">Location (Foreground & Background)</h4>
         <p>Used to track workouts, generate routes, and enable territory features.</p>
 
-        <h4 className="text-surface-text font-semibold mt-4">Notifications</h4>
+        <h4 className="text-[#14140F] font-semibold mt-4">Notifications</h4>
         <p>Used to notify you about activity updates, social interactions, and rewards.</p>
 
-        <h4 className="text-surface-text font-semibold mt-4">Foreground Service & Wake Lock</h4>
+        <h4 className="text-[#14140F] font-semibold mt-4">Foreground Service & Wake Lock</h4>
         <p>Ensures uninterrupted tracking during active sessions.</p>
       </LegalSection>
 

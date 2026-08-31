@@ -4,9 +4,9 @@ import Link from 'next/link';
 
 const FOOTER_LINKS = [
   { label: 'How It Works', href: '#how-it-works' },
-  { label: 'Goals', href: '#goals' },
+  { label: 'Why Yaaro', href: '#goals' },
   { label: 'Insights', href: '#insights' },
-  { label: 'Progress', href: '#download' },
+  { label: 'Download', href: '#download' },
   { label: 'Get Started', href: '#getting-started' },
 ];
 

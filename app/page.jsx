@@ -1,6 +1,7 @@
 import Navbar from '@/src/components/Navbar';
 import Footer from '@/src/components/Footer';
-import HeroSnapStack from '@/src/components/HeroSnapStack';
+import SectionSnapStack from '@/src/components/SectionSnapStack';
+import Hero from '@/src/sections/Hero';
 import MoveHealth from '@/src/sections/MoveHealth';
 import AchieveGoals from '@/src/sections/AchieveGoals';
 import PersonalizedInsights from '@/src/sections/PersonalizedInsights';
@@ -20,19 +21,15 @@ export default function HomePage() {
       <ScrollToTop />
       <Navbar />
       <main>
-        <HeroSnapStack>
+        <SectionSnapStack>
+          <Hero />
           <MoveHealth />
-
           <AchieveGoals />
-
           <PersonalizedInsights />
-
           <TrackProgress />
-
           <GettingStarted />
-
           <SmarterTraining />
-        </HeroSnapStack>
+        </SectionSnapStack>
       </main>
       <Footer />
     </div>

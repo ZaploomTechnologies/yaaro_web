@@ -1,11 +1,9 @@
 'use client';
 
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowLeftIcon, ArrowRightIcon } from '../components/Icons';
-
-gsap.registerPlugin(ScrollTrigger);
 
 const useIsoLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
@@ -16,33 +14,33 @@ const useIsoLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : use
 const INSIGHTS = [
   {
     image: '/workout.jpg',
-    alt: 'Athlete performing a focused strength exercise with weights',
-    caption: 'Exercises Focused on Specific Muscle',
+    alt: 'Athlete logging a strength session and watching the points add up',
+    caption: 'See Every Workout Add Up',
   },
   {
     image: '/running.jpg',
-    alt: 'Runner on an open road holding an easy, sustainable pace',
-    caption: 'Build Endurance Without Burning Out',
+    alt: 'Runner on an open road tracking pace, distance and elevation',
+    caption: 'Track Pace, Distance & Elevation',
   },
   {
     image: '/cycling.jpg',
-    alt: 'Cyclist riding a route matched to their current fitness level',
-    caption: 'Routes Matched to Your Fitness Level',
+    alt: 'Cyclist mapping a route and clocking speed on a ride',
+    caption: 'Map Every Ride You Take',
   },
   {
     image: '/yoga.jpg',
-    alt: 'Person moving through a guided mobility and stretch flow',
-    caption: 'Mobility Work for Your Tight Spots',
+    alt: 'Person logging a mindful yoga session in Yaaro',
+    caption: 'Log Mindful Sessions Too',
   },
   {
     image: '/walking.jpg',
-    alt: 'Person walking outdoors to hit an adaptive daily movement goal',
-    caption: 'Daily Goals That Adapt to You',
+    alt: 'Person walking outdoors, closing in on a daily step goal',
+    caption: 'Daily Step Goals That Stick',
   },
   {
     image: '/dance.jpg',
-    alt: 'Dancer mid-move during a high-energy session',
-    caption: 'Sessions That Keep Training Fun',
+    alt: 'Dancer mid-move, sharing a high-energy session with friends',
+    caption: 'Share Sessions With Friends',
   },
 ];
 
@@ -66,7 +64,7 @@ const EASE = 'power3.inOut';
 /*  animate between the placeholder rects (position-based roles), so the images */
 /*  rotate through the composition instead of just crossfading in place.       */
 /* -------------------------------------------------------------------------- */
-export default function PersonalizedInsights() {
+export default function PersonalizedInsights({ active }) {
   const sectionRef = useRef(null);
   const stageRef = useRef(null);
   const slot0Ref = useRef(null); // large left image
@@ -195,30 +193,12 @@ export default function PersonalizedInsights() {
       .to(cap, { autoAlpha: 1, y: 0, duration: d * 0.4, ease: 'power2.out' }, d * 0.5);
   };
 
-  /* ---- initial placement + one-time scroll entrance -------------------- */
+  /* ---- initial placement -------------------------------------------- */
   useIsoLayoutEffect(() => {
     reducedRef.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const reduced = reducedRef.current;
 
     const ctx = gsap.context(() => {
       place(0, false);
-
-      if (!reduced) {
-        const revealables = [
-          ...headRef.current.querySelectorAll('[data-reveal]'),
-          controlsRef.current,
-          stageRef.current,
-          captionRef.current,
-        ];
-        gsap.from(revealables, {
-          y: 32,
-          autoAlpha: 0,
-          duration: 0.9,
-          ease: 'power3.out',
-          stagger: 0.08,
-          scrollTrigger: { trigger: sectionRef.current, start: 'top 75%', once: true },
-        });
-      }
     }, sectionRef);
 
     // Re-measure the placeholder rects whenever the section reflows.
@@ -240,6 +220,27 @@ export default function PersonalizedInsights() {
     };
   }, []);
 
+  /* ---- cinematic entrance — replays every time this section becomes the
+     active panel in SectionSnapStack, instead of a one-shot native scroll
+     trigger. ------------------------------------------------------------ */
+  useEffect(() => {
+    if (!active || reducedRef.current) return;
+    const revealables = [
+      ...headRef.current.querySelectorAll('[data-reveal]'),
+      controlsRef.current,
+      stageRef.current,
+      captionRef.current,
+    ];
+    const tween = gsap.from(revealables, {
+      y: 32,
+      autoAlpha: 0,
+      duration: 0.9,
+      ease: 'power3.out',
+      stagger: 0.08,
+    });
+    return () => tween.kill();
+  }, [active]);
+
   /* ---- pointer / touch swipe (desktop still uses the arrows) ----------- */
   const onPointerDown = (e) => { swipeX.current = e.clientX; };
   const onPointerUp = (e) => {
@@ -255,8 +256,8 @@ export default function PersonalizedInsights() {
     <section
       ref={sectionRef}
       id="insights"
-      className="relative bg-[#F7F6F2] py-14 md:py-20 overflow-hidden"
-      aria-label="Personalized insights and recommendations"
+      className="relative bg-[#F7F6F2] h-full flex flex-col justify-center py-14 md:py-20 overflow-hidden"
+      aria-label="Insights from every activity you log"
     >
       {/* dotted texture — matches the neighbouring light sections */}
       <div
@@ -284,12 +285,14 @@ export default function PersonalizedInsights() {
               className="absolute top-0 left-0 rounded-[1.75rem] overflow-hidden shadow-[0_30px_60px_-25px_rgba(20,20,15,0.35)] pointer-events-auto select-none"
               style={{ willChange: 'transform, width, height', backfaceVisibility: 'hidden' }}
             >
-              <img
+              <Image
                 src={item.image}
                 alt={item.alt}
                 draggable="false"
-                loading={i === 0 ? 'eager' : 'lazy'}
-                className="absolute inset-0 w-full h-full object-cover"
+                fill
+                sizes="(max-width: 1024px) 90vw, 45vw"
+                priority={i === 0}
+                className="object-cover"
                 style={{ willChange: 'transform' }}
               />
             </article>
@@ -316,13 +319,13 @@ export default function PersonalizedInsights() {
           {/* Right: heading, arrow nav + copy, supporting image pair */}
           <div ref={headRef}>
             <span data-reveal className="relative z-20 block text-sm font-medium text-[#8A8574] mb-3">
-              Achieve your Goals
+              Why Yaaro
             </span>
             <h2
               data-reveal
               className="relative z-20 text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#14140F] leading-[1.05] tracking-tight mb-6 max-w-lg"
             >
-              Personalized Insights and Recommendations
+              Insights That Keep You Coming Back
             </h2>
 
             <div className="relative z-20 flex items-start gap-6 mb-8">
@@ -346,8 +349,8 @@ export default function PersonalizedInsights() {
               </div>
 
               <p className="text-[#6E6A5D] text-sm sm:text-base leading-relaxed max-w-xs pt-2">
-                Based on your body composition data, Yaaro can offer personalized
-                insights and recommendations tailored to your specific goals and needs.
+                Every activity you log turns into clear insights on your progress —
+                and every milestone becomes something worth sharing with friends.
               </p>
             </div>
 

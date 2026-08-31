@@ -38,33 +38,33 @@ function AvatarPlaceholder({ name, size = 'md' }) {
     .join('')
     .toUpperCase()
     .slice(0, 2) || 'Y';
-    
+
   const sizeClass = size === 'sm' ? 'w-12 h-12 text-base' : 'w-14 h-14 text-lg';
   return (
-    <div className={`${sizeClass} rounded-xl bg-primary-low flex items-center justify-center shrink-0`}>
-      <span className="font-bold text-primary">{initials}</span>
+    <div className={`${sizeClass} rounded-xl bg-primary/15 flex items-center justify-center shrink-0`}>
+      <span className="font-bold text-[#14140F]">{initials}</span>
     </div>
   );
 }
 
 function SetRow({ set, index, colCount }) {
   const isEven = index % 2 === 0;
-  const bg = isEven ? 'bg-surface-bg/30' : 'bg-transparent';
+  const bg = isEven ? 'bg-[#14140F]/[0.03]' : 'bg-transparent';
 
   return (
-    <div 
-      className={`grid divide-x divide-border/40 border-b border-border/40 last:border-b-0 ${bg}`}
+    <div
+      className={`grid divide-x divide-[#14140F]/10 border-b border-[#14140F]/10 last:border-b-0 ${bg}`}
       style={{ gridTemplateColumns: `repeat(${colCount}, minmax(0, 1fr))` }}
     >
-      <div className="py-3 px-4 text-center text-sm font-semibold text-surface-secondary">
+      <div className="py-3 px-4 text-center text-sm font-semibold text-[#6E6A5D]">
         {set.setNumber}
       </div>
       {set.weight !== undefined && (
-        <div className="py-3 px-4 text-center text-sm font-bold text-surface-text">
+        <div className="py-3 px-4 text-center text-sm font-bold text-[#14140F]">
           {set.weight}
         </div>
       )}
-      <div className="py-3 px-4 text-center text-sm font-semibold text-surface-text">
+      <div className="py-3 px-4 text-center text-sm font-semibold text-[#14140F]">
         {set.reps}
       </div>
     </div>
@@ -75,24 +75,24 @@ function MuscleGroupsCard({ groups }) {
   if (!groups || groups.length === 0) return null;
 
   return (
-    <div className="bg-surface-card rounded-2xl border border-border px-5 py-4 mb-6">
-      <h2 className="text-xl font-bold text-white mb-6">Muscle Groups</h2>
+    <div className="bg-white/80 rounded-2xl border border-[#14140F]/[0.06] shadow-[0_20px_40px_-30px_rgba(20,20,15,0.25)] px-5 py-4 mb-6">
+      <h2 className="text-xl font-bold text-[#14140F] mb-6">Muscle Groups</h2>
       <div className="space-y-4">
         {groups.map((group) => (
           <div key={group.label} className="relative flex items-center justify-between">
             {/* Background Bar */}
-            <div className="absolute inset-0 h-8 bg-surface-bg/50 rounded-lg overflow-hidden" />
-            
-            {/* Progress Bar (Olive color) */}
-            <div 
-              className="absolute inset-y-0 left-0 h-8 bg-[#4D5D2D] rounded-lg transition-all duration-700 ease-out" 
+            <div className="absolute inset-0 h-8 bg-[#14140F]/[0.05] rounded-lg overflow-hidden" />
+
+            {/* Progress Bar */}
+            <div
+              className="absolute inset-y-0 left-0 h-8 bg-primary rounded-lg transition-all duration-700 ease-out"
               style={{ width: `${group.percentage}%` }}
             />
-            
+
             {/* Overlay Label & Percentage */}
             <div className="relative z-10 w-full flex items-center justify-between px-3 h-8">
-              <span className="text-sm font-medium text-white">{group.label}</span>
-              <span className="text-sm font-semibold text-surface-secondary">{group.percentage}%</span>
+              <span className="text-sm font-medium text-[#14140F]">{group.label}</span>
+              <span className="text-sm font-semibold text-[#14140F]/70">{group.percentage}%</span>
             </div>
           </div>
         ))}
@@ -109,29 +109,29 @@ function ExerciseBlock({ exercise }) {
     <div className="mb-10 last:mb-0">
       {/* Exercise header */}
       <div className="flex items-center gap-4 mb-5">
-        <div className="w-14 h-14 rounded-xl overflow-hidden bg-surface-bg border border-border/50 shrink-0 flex items-center justify-center">
-          <img 
-            src={`https://api.dicebear.com/7.x/shapes/svg?seed=${exercise.exerciseName}&backgroundColor=333333`} 
+        <div className="w-14 h-14 rounded-xl overflow-hidden bg-[#F1F0EA] border border-[#14140F]/10 shrink-0 flex items-center justify-center">
+          <img
+            src={`https://api.dicebear.com/7.x/shapes/svg?seed=${exercise.exerciseName}&backgroundColor=f1f0ea`}
             alt={exercise.exerciseName}
             className="w-full h-full object-cover"
           />
         </div>
         <div>
-          <h3 className="text-lg font-bold text-white tracking-tight border-b-2 border-white/90 inline-block pb-0.5">
+          <h3 className="text-lg font-bold text-[#14140F] tracking-tight border-b-2 border-[#14140F]/80 inline-block pb-0.5">
             {exercise.exerciseName}
           </h3>
         </div>
       </div>
 
       {/* Table Container */}
-      <div className="border border-border/40 rounded-xl overflow-hidden bg-surface-bg/20">
+      <div className="border border-[#14140F]/10 rounded-xl overflow-hidden bg-[#14140F]/[0.02]">
         {/* Table Header */}
-        <div 
-          className="grid divide-x divide-border/40 border-b border-border/40 bg-surface-card/40"
+        <div
+          className="grid divide-x divide-[#14140F]/10 border-b border-[#14140F]/10 bg-[#14140F]/[0.04]"
           style={{ gridTemplateColumns: `repeat(${colCount}, minmax(0, 1fr))` }}
         >
           {headers.map((header) => (
-            <div key={header} className="py-2.5 px-4 text-center text-[10px] font-bold text-surface-secondary uppercase tracking-widest">
+            <div key={header} className="py-2.5 px-4 text-center text-[10px] font-bold text-[#6E6A5D] uppercase tracking-widest">
               {header}
             </div>
           ))}
@@ -150,7 +150,7 @@ function ExerciseBlock({ exercise }) {
 
 function ProfileSidebar({ user }) {
   return (
-    <div className="bg-surface-card rounded-2xl border border-border p-5 space-y-4">
+    <div className="bg-white/80 rounded-2xl border border-[#14140F]/[0.06] shadow-[0_20px_40px_-30px_rgba(20,20,15,0.25)] p-5 space-y-4">
       {/* User info */}
       <div className="flex items-center gap-3">
         {user.avatar ? (
@@ -159,7 +159,7 @@ function ProfileSidebar({ user }) {
           <AvatarPlaceholder name={user.displayName} />
         )}
         <div>
-          <p className="font-bold text-surface-text leading-tight">{user.displayName}</p>
+          <p className="font-bold text-[#14140F] leading-tight">{user.displayName}</p>
         </div>
       </div>
 
@@ -172,17 +172,17 @@ function ProfileSidebar({ user }) {
         ].map(({ label, value }, i, arr) => (
           <div key={label} className="flex items-center gap-4">
             <div className="flex flex-col items-center">
-              <span className="text-lg font-bold text-surface-text">{value.toLocaleString()}</span>
-              <span className="text-[10px] text-surface-secondary uppercase tracking-wide">{label}</span>
+              <span className="text-lg font-bold text-[#14140F]">{value.toLocaleString()}</span>
+              <span className="text-[10px] text-[#8A8574] uppercase tracking-wide">{label}</span>
             </div>
-            {i < arr.length - 1 && <div className="w-px h-8 bg-border" />}
+            {i < arr.length - 1 && <div className="w-px h-8 bg-[#14140F]/10" />}
           </div>
         ))}
       </div>
 
       {/* Download CTA */}
-      <p className="text-xs text-surface-secondary leading-relaxed">
-        To follow <span className="text-surface-text font-medium">{user.userName}</span> and track your own workouts, download Yaaro for free.
+      <p className="text-xs text-[#6E6A5D] leading-relaxed">
+        To follow <span className="text-[#14140F] font-medium">{user.userName}</span> and track your own workouts, download Yaaro for free.
       </p>
 
       <div className="flex flex-col gap-2">
@@ -191,13 +191,13 @@ function ProfileSidebar({ user }) {
           target="_blank"
           rel="noopener noreferrer"
           whileTap={{ scale: 0.97 }}
-          className="flex items-center gap-2.5 bg-black border border-[#333] rounded-xl px-4 py-2.5 hover:border-primary/40 transition-colors"
+          className="flex items-center gap-2.5 bg-[#14140F] rounded-xl px-4 py-2.5 hover:brightness-110 transition-all"
         >
           <svg width="18" height="22" viewBox="0 0 20 24" fill="white">
             <path d="M16.462 12.482c-.028-3.21 2.618-4.76 2.738-4.835-1.493-2.183-3.815-2.482-4.641-2.513-1.974-.2-3.862 1.17-4.865 1.17-.999 0-2.541-1.143-4.181-1.112-2.147.033-4.133 1.252-5.237 3.167C-1.873 12.12.713 18.4 2.83 21.81c1.056 1.524 2.31 3.232 3.956 3.17 1.594-.065 2.193-1.024 4.117-1.024 1.924 0 2.473 1.024 4.15.99 1.714-.028 2.798-1.545 3.843-3.073a16.4 16.4 0 0 0 1.749-3.558c-.04-.016-3.35-1.283-3.383-5.833ZM13.23 3.387C14.1 2.327 14.69.938 14.524-.5c-1.193.05-2.64.797-3.491 1.835-.77.9-1.444 2.337-1.263 3.715 1.329.102 2.688-.67 3.46-1.663Z" />
           </svg>
           <div className="text-left">
-            <p className="text-[10px] text-gray-400 leading-none">Download on the</p>
+            <p className="text-[10px] text-white/60 leading-none">Download on the</p>
             <p className="text-sm font-semibold text-white leading-tight">App Store</p>
           </div>
         </motion.a>
@@ -207,7 +207,7 @@ function ProfileSidebar({ user }) {
           target="_blank"
           rel="noopener noreferrer"
           whileTap={{ scale: 0.97 }}
-          className="flex items-center gap-2.5 bg-black border border-[#333] rounded-xl px-4 py-2.5 hover:border-primary/40 transition-colors"
+          className="flex items-center gap-2.5 bg-[#14140F] rounded-xl px-4 py-2.5 hover:brightness-110 transition-all"
         >
           <svg width="18" height="20" viewBox="0 0 20 22" fill="none">
             <path d="M1.07.65C.67.87.4 1.3.4 1.85v18.3c0 .55.27.98.67 1.2l.1.06 10.25-10.25v-.24L1.17.59l-.1.06Z" fill="url(#gp-a2)" />
@@ -230,7 +230,7 @@ function ProfileSidebar({ user }) {
             </defs>
           </svg>
           <div className="text-left">
-            <p className="text-[10px] text-gray-400 leading-none">GET IT ON</p>
+            <p className="text-[10px] text-white/60 leading-none">GET IT ON</p>
             <p className="text-sm font-semibold text-white leading-tight">Google Play</p>
           </div>
         </motion.a>
@@ -311,10 +311,10 @@ export default function WorkoutPage({ serverParams }) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
+      <div className="min-h-screen bg-[#F7F6F2] flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
-          <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
-          <p className="text-surface-secondary text-sm animate-pulse">Loading activity...</p>
+          <div className="w-12 h-12 border-4 border-primary/25 border-t-primary rounded-full animate-spin" />
+          <p className="text-[#6E6A5D] text-sm animate-pulse">Loading activity...</p>
         </div>
       </div>
     );
@@ -322,15 +322,15 @@ export default function WorkoutPage({ serverParams }) {
 
   if (error || !workout) {
     return (
-      <div className="min-h-screen bg-black flex flex-col items-center justify-center p-6 text-center">
+      <div className="min-h-screen bg-[#F7F6F2] flex flex-col items-center justify-center p-6 text-center">
         <div className="w-20 h-20 bg-red-500/10 rounded-full flex items-center justify-center mb-6">
           <ICONS.alert className="w-10 h-10 text-red-500" />
         </div>
-        <h1 className="text-2xl font-bold text-white mb-2">Activity Not Found</h1>
-        <p className="text-surface-secondary mb-8 max-w-xs">
+        <h1 className="text-2xl font-bold text-[#14140F] mb-2">Activity Not Found</h1>
+        <p className="text-[#6E6A5D] mb-8 max-w-xs">
           The activity you&apos;re looking for might have been removed or is private.
         </p>
-        <Link href="/" className="bg-primary text-black font-bold px-8 py-3 rounded-full hover:scale-105 transition-transform">
+        <Link href="/" className="bg-primary text-[#14140F] font-bold px-8 py-3 rounded-full hover:scale-105 transition-transform">
           Back to Home
         </Link>
       </div>
@@ -340,11 +340,20 @@ export default function WorkoutPage({ serverParams }) {
   const { user } = workout;
 
   return (
-    <div className="min-h-screen bg-surface-bg flex flex-col">
-      <main className="flex-1 max-w-5xl mx-auto w-full px-4 py-8">
+    <div className="relative min-h-screen bg-[#F7F6F2] flex flex-col overflow-hidden">
+      {/* dotted texture — matches every other section on the site */}
+      <div
+        className="absolute inset-0 opacity-[0.35] pointer-events-none"
+        style={{
+          backgroundImage: 'radial-gradient(#14140F 0.6px, transparent 0.6px)',
+          backgroundSize: '14px 14px',
+        }}
+      />
+
+      <main className="relative flex-1 max-w-5xl mx-auto w-full px-4 py-8">
         <div className="mb-10">
           <Link href="/" className="inline-block hover:opacity-80 transition-opacity">
-            <img src="/Yaaro-Logo.png" alt="Yaaro" width={84} />
+            <img src="/Yaaro-Logo.png" alt="Yaaro" width={92} />
           </Link>
         </div>
 
@@ -355,7 +364,7 @@ export default function WorkoutPage({ serverParams }) {
           transition={{ duration: 0.45, ease: 'easeOut' }}
           className="flex-1 w-full"
         >
-          <div className="bg-surface-card rounded-2xl border border-border px-5 py-4 mb-6">
+          <div className="bg-white/80 rounded-2xl border border-[#14140F]/[0.06] shadow-[0_20px_40px_-30px_rgba(20,20,15,0.25)] px-5 py-4 mb-6">
             <div className="flex items-start gap-3 mb-4">
               {user.avatar ? (
                 <img src={user.avatar} alt={user.displayName} className="w-12 h-12 rounded-xl object-cover" />
@@ -363,8 +372,8 @@ export default function WorkoutPage({ serverParams }) {
                 <AvatarPlaceholder name={user.displayName} size="sm" />
               )}
               <div className="pt-0.5">
-                <p className="text-base font-bold text-surface-text mb-0.5 leading-tight">{user.displayName}</p>
-                <div className="flex items-center gap-1.5 text-surface-secondary">
+                <p className="text-base font-bold text-[#14140F] mb-0.5 leading-tight">{user.displayName}</p>
+                <div className="flex items-center gap-1.5 text-[#6E6A5D]">
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" className="shrink-0 opacity-80">
                     <path d="M6 6l12 12" />
                     <path d="M4 10l6-6" />
@@ -378,31 +387,31 @@ export default function WorkoutPage({ serverParams }) {
             </div>
 
             <div className="mb-6">
-              <h1 className="text-xl font-bold text-surface-text mb-1.5 tracking-tight">{workout.activityType} Workout</h1>
+              <h1 className="text-xl font-bold text-[#14140F] mb-1.5 tracking-tight">{workout.activityType} Workout</h1>
               {workout.description && (
-                <p className="text-sm text-surface-secondary leading-relaxed">{workout.description}</p>
+                <p className="text-sm text-[#6E6A5D] leading-relaxed">{workout.description}</p>
               )}
             </div>
 
-            <div className="grid grid-cols-3 gap-4 border-t border-border/40 pt-4">
+            <div className="grid grid-cols-3 gap-4 border-t border-[#14140F]/10 pt-4">
               <div>
-                <p className="text-[10px] text-surface-secondary font-semibold mb-0.5 opacity-70 uppercase tracking-wider">Time</p>
-                <p className="text-lg font-bold text-surface-text tracking-tight">{workout.duration}</p>
+                <p className="text-[10px] text-[#6E6A5D] font-semibold mb-0.5 opacity-70 uppercase tracking-wider">Time</p>
+                <p className="text-lg font-bold text-[#14140F] tracking-tight">{workout.duration}</p>
               </div>
               <div>
-                <p className="text-[10px] text-surface-secondary font-semibold mb-0.5 opacity-70 uppercase tracking-wider">Volume</p>
-                <p className="text-lg font-bold text-surface-text tracking-tight">{workout.volume}</p>
+                <p className="text-[10px] text-[#6E6A5D] font-semibold mb-0.5 opacity-70 uppercase tracking-wider">Volume</p>
+                <p className="text-lg font-bold text-[#14140F] tracking-tight">{workout.volume}</p>
               </div>
               <div>
-                <p className="text-[10px] text-surface-secondary font-semibold mb-0.5 opacity-70 uppercase tracking-wider">Set</p>
-                <p className="text-lg font-bold text-surface-text tracking-tight">{workout.setsCount}</p>
+                <p className="text-[10px] text-[#6E6A5D] font-semibold mb-0.5 opacity-70 uppercase tracking-wider">Set</p>
+                <p className="text-lg font-bold text-[#14140F] tracking-tight">{workout.setsCount}</p>
               </div>
             </div>
           </div>
 
           <MuscleGroupsCard groups={workout.muscleGroups} />
 
-          <div className="bg-surface-card rounded-2xl border border-border p-5">
+          <div className="bg-white/80 rounded-2xl border border-[#14140F]/[0.06] shadow-[0_20px_40px_-30px_rgba(20,20,15,0.25)] p-5">
             {workout.exercises.map((exercise, idx) => (
               <ExerciseBlock key={idx} exercise={exercise} />
             ))}
@@ -420,8 +429,8 @@ export default function WorkoutPage({ serverParams }) {
       </div>
     </main>
 
-      <footer className="w-full px-4 py-4 border-t border-border text-center">
-        <p className="text-xs text-surface-secondary">
+      <footer className="relative w-full px-4 py-4 border-t border-[#14140F]/10 text-center">
+        <p className="text-xs text-[#8A8574]">
           &copy; {new Date().getFullYear()} Yaaro. All rights reserved.
         </p>
       </footer>

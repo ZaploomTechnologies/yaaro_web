@@ -3,23 +3,25 @@
 import { motion } from 'framer-motion';
 import { TargetIcon, HeartIcon, UsersIcon } from '../components/Icons';
 
-function cardMotion(delay = 0) {
+// Cards/heading no longer reveal on native scroll-into-view — this section
+// sits inside SectionSnapStack, which passes `active` once it becomes the
+// on-stage panel, and the same staggered reveal replays from there instead.
+function cardMotion(active, delay = 0) {
   return {
     initial: { opacity: 0, y: 40, scale: 0.94 },
-    whileInView: { opacity: 1, y: 0, scale: 1 },
-    viewport: { once: true, amount: 0.3 },
+    animate: active ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 40, scale: 0.94 },
     transition: { type: 'spring', stiffness: 260, damping: 18, mass: 0.8, delay },
   };
 }
 
 const LOG_ENTRIES = [
-  { label: 'Morning Run', status: 'Active', tone: 'amber' },
-  { label: 'Evening Workout', status: 'Logged', tone: 'primary' },
+  { label: '10K Steps Challenge', status: 'Joined', tone: 'amber' },
+  { label: 'Morning Run', status: '+120 pts earned', tone: 'primary' },
 ];
 
-export default function AchieveGoals() {
+export default function AchieveGoals({ active }) {
   return (
-    <section id="goals" className="relative bg-[#F7F6F2] py-16 md:py-24 overflow-hidden" aria-label="Achieve your health objectives">
+    <section id="goals" className="relative bg-[#F7F6F2] h-full flex flex-col justify-center py-16 md:py-24 overflow-hidden" aria-label="Everything Yaaro offers">
       <div
         className="absolute inset-0 opacity-[0.35] pointer-events-none"
         style={{
@@ -40,55 +42,54 @@ export default function AchieveGoals() {
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.h2
           initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          animate={active ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
-          viewport={{ once: true, amount: 0.4 }}
           className="text-3xl sm:text-4xl lg:text-[2.75rem] font-extrabold leading-tight tracking-tight text-[#14140F] text-center mb-12 md:mb-16"
         >
-          Achieve Your Fitness Goals
+          Everything You Need
           <br />
-          in 1-2-3
+          to Thrive
         </motion.h2>
 
         <div className="grid md:grid-cols-2 gap-5">
           <div className="grid grid-rows-2 gap-5">
             <motion.div
-              {...cardMotion(0)}
+              {...cardMotion(active, 0)}
               className="bg-white/70 border border-[#14140F]/[0.06] rounded-[1.75rem] p-6 sm:p-7"
             >
               <div className="w-11 h-11 rounded-full bg-pink-500/15 flex items-center justify-center mb-5">
                 <TargetIcon className="w-5 h-5 text-pink-500" />
               </div>
-              <h3 className="text-lg font-bold text-[#14140F] mb-2">Smarter Training</h3>
+              <h3 className="text-lg font-bold text-[#14140F] mb-2">Share Your Journey</h3>
               <p className="text-[#6E6A5D] text-sm leading-relaxed">
-                Turn your phone or smartwatch into your coach — track your workouts and get tons of data and tips to help you train better.
+                Post your workouts, photos and milestones. Like, comment and cheer friends on, and discover trending fitness content.
               </p>
             </motion.div>
 
             <motion.div
-              {...cardMotion(0.1)}
+              {...cardMotion(active, 0.1)}
               className="bg-white/70 border border-[#14140F]/[0.06] rounded-[1.75rem] p-6 sm:p-7"
             >
               <div className="w-11 h-11 rounded-full bg-orange-500/15 flex items-center justify-center mb-5">
                 <HeartIcon className="w-5 h-5 text-orange-500" />
               </div>
-              <h3 className="text-lg font-bold text-[#14140F] mb-2">Custom Workouts</h3>
+              <h3 className="text-lg font-bold text-[#14140F] mb-2">Earn While You Sweat</h3>
               <p className="text-[#6E6A5D] text-sm leading-relaxed">
-                Marathon? 5K? Get tailored training plans built specifically for you and your goals, no matter where you are at.
+                Earn points on every activity and redeem them for real fitness gear and vouchers, with bonus points for streaks and challenges.
               </p>
             </motion.div>
           </div>
 
           <motion.div
-            {...cardMotion(0.15)}
+            {...cardMotion(active, 0.15)}
             className="bg-white/70 border border-[#14140F]/[0.06] rounded-[1.75rem] p-6 sm:p-7 flex flex-col"
           >
             <div className="w-11 h-11 rounded-full bg-emerald-500/15 flex items-center justify-center mb-5">
               <UsersIcon className="w-5 h-5 text-emerald-500" />
             </div>
-            <h3 className="text-lg font-bold text-[#14140F] mb-2">Strong Community</h3>
+            <h3 className="text-lg font-bold text-[#14140F] mb-2">Challenges &amp; Clubs</h3>
             <p className="text-[#6E6A5D] text-sm leading-relaxed mb-6">
-              Create your own custom challenges to push yourself and your friends. For extra motivation, reach out and find support from the entire Yaaro community.
+              Take on weekly and monthly community challenges, climb the leaderboards, and join clubs built around the sports and people you love.
             </p>
 
             <div className="mt-auto space-y-3">

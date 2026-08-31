@@ -1,15 +1,17 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import { AppleIcon, PlayStoreIcon, FlameIcon, HeartIcon, FootprintIcon } from '../components/Icons';
 
 /* -------------------------------------------------------------------------- */
 /*  Reveal helper — matches the neighbouring light sections                    */
 /* -------------------------------------------------------------------------- */
-const reveal = (delay = 0) => ({
+// Reveals on `active` (this panel becoming on-stage in SectionSnapStack)
+// instead of native scroll-into-view.
+const reveal = (active, delay = 0) => ({
   initial: { opacity: 0, y: 40 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, amount: 0.3 },
+  animate: active ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 },
   transition: { duration: 0.6, ease: 'easeOut', delay },
 });
 
@@ -19,9 +21,9 @@ const PLAY_STORE_URL =
   'https://play.google.com/store/apps/details?id=com.yaaro.fit';
 
 const DAILY_ROWS = [
-  { Icon: FootprintIcon, label: 'Daily Challenge', value: '8,240 steps', done: true },
-  { Icon: FlameIcon, label: 'Skip Cycle Ride Today', value: '12.4 km', done: true },
-  { Icon: HeartIcon, label: 'My Healthy Lifestyle', value: '3 goals left', done: false },
+  { Icon: FootprintIcon, label: 'Daily Activity Goal', value: '8,240 steps', done: true },
+  { Icon: FlameIcon, label: 'Weekly Challenge', value: '12.4 km logged', done: true },
+  { Icon: HeartIcon, label: 'Points This Week', value: '+640 pts', done: false },
 ];
 
 function StoreButton({ href, kicker, name, children }) {
@@ -60,12 +62,12 @@ function Sparkline({ className = '' }) {
   );
 }
 
-export default function TrackProgress() {
+export default function TrackProgress({ active }) {
   return (
     <section
       id="download"
-      className="relative bg-[#F7F6F2] py-16 md:py-24 overflow-hidden"
-      aria-label="Track your health progress"
+      className="relative bg-[#F7F6F2] h-full flex flex-col justify-center py-16 md:py-24 overflow-hidden"
+      aria-label="Start your fitness journey with Yaaro"
     >
       {/* dotted texture */}
       <div
@@ -76,28 +78,28 @@ export default function TrackProgress() {
         }}
       />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
-          {...reveal()}
+          {...reveal(active)}
           className="relative rounded-[2rem] bg-primary overflow-hidden shadow-[0_40px_80px_-40px_rgba(20,20,15,0.35)]"
         >
           <div className="grid lg:grid-cols-2">
             {/* ---------- Left: copy + store buttons + daily list ---------- */}
-            <div className="p-8 sm:p-12 lg:p-14">
-              <span className="block text-xs font-semibold tracking-[0.2em] uppercase text-[#14140F]/55 mb-4">
+            <div className="p-6 sm:p-8 lg:p-10">
+              <span className="block text-xs font-semibold tracking-[0.2em] uppercase text-[#14140F]/55 mb-3">
                 Yaaro for iOS &amp; Android
               </span>
-              <h2 className="text-3xl sm:text-4xl lg:text-[2.75rem] font-extrabold leading-[1.05] tracking-tight text-[#14140F] mb-4">
-                Track Your Health
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold leading-[1.05] tracking-tight text-[#14140F] mb-3">
+                Start Your Fitness
                 <br />
-                Progress
+                Journey Today
               </h2>
-              <p className="text-[#14140F]/70 text-base leading-relaxed mb-8 max-w-md">
-                Watch every run, ride and workout add up. Yaaro turns your daily
-                movement into clear trends you can actually act on.
+              <p className="text-[#14140F]/70 text-sm sm:text-base leading-relaxed mb-6 max-w-md">
+                Watch every run, ride and workout add up — and turn all that
+                movement into points you can redeem for real rewards.
               </p>
 
-              <div className="flex flex-wrap gap-3 mb-9">
+              <div className="flex flex-wrap gap-3 mb-6">
                 <StoreButton href={APP_STORE_URL} kicker="Download on the" name="App Store">
                   <AppleIcon className="w-5 h-5 text-white" />
                 </StoreButton>
@@ -134,20 +136,21 @@ export default function TrackProgress() {
             </div>
 
             {/* ---------- Right: photo + floating stat cards ---------- */}
-            <div className="relative min-h-[26rem] lg:min-h-0">
-              <img
+            <div className="relative min-h-[20rem] lg:min-h-0">
+              <Image
                 src="/workout.jpg"
                 alt="Athlete resting between sets, reviewing their session in Yaaro"
-                loading="lazy"
-                className="absolute inset-0 w-full h-full object-cover"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-primary/30 via-transparent to-transparent lg:bg-gradient-to-l" />
 
               {/* Current-period cards */}
               <div className="absolute top-5 right-5 flex gap-3">
                 {[
-                  { label: 'Current Period', date: 'Sep 08' },
-                  { label: 'Current Period', date: 'Oct 13' },
+                  { label: 'Activity Log', date: 'Sep 08' },
+                  { label: 'Activity Log', date: 'Oct 13' },
                 ].map((c, i) => (
                   <div
                     key={i}
@@ -156,14 +159,14 @@ export default function TrackProgress() {
                     <p className="text-[10px] uppercase tracking-wide text-[#8A8574]">{c.label}</p>
                     <p className="text-base font-extrabold text-[#14140F] leading-tight mt-0.5">
                       {c.date}
-                      <span className="text-[#8A8574] font-medium"> 2024</span>
+                      <span className="text-[#8A8574] font-medium"> 2026</span>
                     </p>
                   </div>
                 ))}
               </div>
 
               {/* Daily step card */}
-              <div className="absolute bottom-5 left-5 right-5 sm:right-auto sm:w-64 rounded-2xl bg-white/92 backdrop-blur-sm p-4 shadow-xl">
+              <div className="absolute bottom-5 left-5 right-5 sm:right-auto sm:w-64 rounded-2xl bg-white/[0.92] backdrop-blur-sm p-4 shadow-xl">
                 <div className="flex items-baseline justify-between">
                   <p className="text-xs font-semibold text-[#6E6A5D]">Daily step</p>
                   <p className="text-2xl font-extrabold text-[#14140F] leading-none">83%</p>

@@ -2,6 +2,9 @@
 const nextConfig = {
   poweredByHeader: false,
   compress: true,
+  // Hides the Next.js dev-mode indicator (the black strip / "N" badge) that
+  // appears only in local development — no effect on the production build.
+  devIndicators: false,
   images: {
     remotePatterns: [
       {

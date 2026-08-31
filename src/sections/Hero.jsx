@@ -1,10 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import {
-  StarIcon,
-  RunnerLightningIcon,
-} from '../components/Icons';
+import { RunnerLightningIcon } from '../components/Icons';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -14,14 +11,6 @@ const fadeUp = {
     transition: { duration: 0.6, delay: i * 0.15, ease: 'easeOut' },
   }),
 };
-
-const MINI_STATS = [
-  { value: '50K+', label: 'Happy Users' },
-  { value: '5M+', label: 'Activities Logged' },
-  { value: '6+', label: 'Activity Types' },
-];
-
-const AVATAR_SEEDS = ['Arjun', 'Priya', 'Rohit'];
 
 function SwooshBackground() {
   return (
@@ -48,20 +37,11 @@ function SwooshBackground() {
   );
 }
 
-function StatBlock({ value, label }) {
-  return (
-    <div>
-      <p className="text-2xl sm:text-[1.75rem] font-extrabold text-[#14140F] leading-none">{value}</p>
-      <p className="text-xs text-[#83806F] mt-1.5">{label}</p>
-    </div>
-  );
-}
-
 export default function Hero() {
   return (
     <section
       id="home"
-      className="relative bg-[#EDEDE8] overflow-hidden"
+      className="relative bg-[#EDEDE8] h-full overflow-hidden"
       aria-label="Hero section"
     >
       <SwooshBackground />
@@ -103,7 +83,7 @@ export default function Hero() {
               className="text-[#6E6A5D] text-base sm:text-lg leading-relaxed mb-8 max-w-sm"
             >
               Yaaro turns every workout into a rewarding experience — track activities,
-              share your journey, and earn real rewards.
+              share your journey with friends, and earn real rewards.
             </motion.p>
 
             <motion.div
@@ -115,22 +95,14 @@ export default function Hero() {
             >
               <a
                 href="#download"
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.dispatchEvent(new CustomEvent('yaaro:snapjump', { detail: { id: 'download' } }));
+                }}
                 className="inline-flex items-center justify-center bg-primary text-[#14140F] font-semibold text-base px-8 py-4 rounded-full shadow-[0_10px_30px_-10px_rgba(208,234,89,0.6)] hover:shadow-[0_14px_36px_-10px_rgba(208,234,89,0.75)] hover:-translate-y-0.5 transition-all duration-200"
               >
                 Get Started
               </a>
-            </motion.div>
-
-            <motion.div
-              custom={4}
-              variants={fadeUp}
-              initial="hidden"
-              animate="visible"
-              className="hidden lg:flex items-center gap-8"
-            >
-              {MINI_STATS.map((stat) => (
-                <StatBlock key={stat.label} value={stat.value} label={stat.label} />
-              ))}
             </motion.div>
           </div>
 
@@ -162,53 +134,7 @@ export default function Hero() {
             </div>
           </motion.div>
         </div>
-
-        {/* Mini stats (mobile) */}
-        <motion.div
-          custom={4}
-          variants={fadeUp}
-          initial="hidden"
-          animate="visible"
-          className="flex lg:hidden items-center gap-8 mt-8"
-        >
-          {MINI_STATS.map((stat) => (
-            <StatBlock key={stat.label} value={stat.value} label={stat.label} />
-          ))}
-        </motion.div>
       </div>
-
-      {/* Full-width stat bar */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.6, ease: 'easeOut' }}
-        className="relative z-10 border-t border-black/[0.07]"
-      >
-        <div className="max-w-[1400px] mx-auto grid grid-cols-3 divide-x divide-black/[0.07]">
-          <div className="flex items-center justify-center gap-3 sm:gap-4 px-3 sm:px-6 py-5 sm:py-6">
-            <div className="flex -space-x-3">
-              {AVATAR_SEEDS.map((seed) => (
-                <img
-                  key={seed}
-                  src={`https://api.dicebear.com/9.x/avataaars/svg?seed=${seed}`}
-                  alt=""
-                  className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-white bg-primary-container"
-                />
-              ))}
-            </div>
-            <p className="text-lg sm:text-xl font-extrabold text-[#14140F]">50K+</p>
-          </div>
-
-          <div className="flex items-center justify-center gap-2 sm:gap-2.5 px-3 sm:px-6 py-5 sm:py-6">
-            <StarIcon className="w-5 h-5 sm:w-6 sm:h-6 text-amber-400" />
-            <p className="text-lg sm:text-xl font-extrabold text-[#14140F]">4.8</p>
-          </div>
-
-          <div className="flex items-center justify-center px-3 sm:px-6 py-5 sm:py-6">
-            <p className="text-lg sm:text-xl font-extrabold text-[#14140F]">6+</p>
-          </div>
-        </div>
-      </motion.div>
     </section>
   );
 }
