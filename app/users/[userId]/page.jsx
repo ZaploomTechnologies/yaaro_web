@@ -27,10 +27,14 @@ export default async function UserPage({ params }) {
 
   // Fetch server-side — triggers the 404 page on any failure
   try {
-    const res = await fetch(apiUrl(`/users/${userId}`), { next: { revalidate: 60 } });
+    const [res, feedRes] = await Promise.all([
+      fetch(apiUrl(`/users/${userId}`), { next: { revalidate: 60 } }),
+      fetch(apiUrl(`/users/${userId}/latest-feed`), { next: { revalidate: 60 } }).catch(() => null),
+    ]);
     if (!res.ok) notFound();
     const data = await res.json();
-    return <ProfilePage initialData={data} />;
+    const initialFeed = feedRes && feedRes.ok ? await feedRes.json() : null;
+    return <ProfilePage initialData={data} initialFeed={initialFeed} />;
   } catch {
     notFound();
   }

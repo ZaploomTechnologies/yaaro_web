@@ -10,6 +10,11 @@ const FOOTER_LINKS = [
   { label: 'Get Started', href: '#getting-started' },
 ];
 
+const PAGE_LINKS = [
+  { label: 'About', href: '/about' },
+  { label: 'Contact', href: '/contact' },
+];
+
 const LEGAL_LINKS = [
   { label: 'Privacy Policy', href: '/privacy-policy' },
   { label: 'Terms of Service', href: '/terms' },
@@ -75,6 +80,15 @@ export default function Footer() {
               >
                 {link.label}
               </a>
+            ))}
+            {PAGE_LINKS.map((link) => (
+              <Link
+                key={link.label}
+                href={link.href}
+                className="text-[#6E6A5D] text-sm hover:text-[#14140F] transition-colors duration-200"
+              >
+                {link.label}
+              </Link>
             ))}
           </nav>
         </div>

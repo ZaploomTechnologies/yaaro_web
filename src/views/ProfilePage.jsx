@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { ICONS } from '../components/Icons';
 import { apiUrl } from '../lib/api';
+import FeedCard from '../components/FeedCard';
 
 // Mock data — replace with API call later
 const MOCK_PROFILE = {
@@ -52,13 +53,14 @@ function AvatarPlaceholder({ name }) {
 }
 
 
-export default function ProfilePage({ serverParams, initialData }) {
+export default function ProfilePage({ serverParams, initialData, initialFeed }) {
   const routerParams = useParams();
   const userId = routerParams?.userId ?? serverParams?.userId;
   const [profile, setProfile] = useState(initialData || null);
   const [loading, setLoading] = useState(!initialData);
   const [error, setError] = useState(null);
   const [imgError, setImgError] = useState(false);
+  const [feed, setFeed] = useState(initialFeed ?? null);
 
   useEffect(() => {
     // Skip fetch when the server already passed data
@@ -87,6 +89,27 @@ export default function ProfilePage({ serverParams, initialData }) {
       fetchProfile();
     }
   }, [userId, initialData]);
+
+  useEffect(() => {
+    // Server already resolved the latest feed (value may be null = none)
+    if (initialFeed !== undefined) return;
+    if (!userId) return;
+
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch(apiUrl(`/users/${userId}/latest-feed`));
+        if (!res.ok) return;
+        const result = await res.json();
+        if (!cancelled) setFeed(result);
+      } catch (err) {
+        console.error('Error fetching latest feed:', err);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [userId, initialFeed]);
 
   if (loading) {
     return (
@@ -192,6 +215,16 @@ export default function ProfilePage({ serverParams, initialData }) {
               </p>
             )}
           </div>
+
+          {/* Latest activity */}
+          {feed && (
+            <div className="mb-10">
+              <h2 className="text-[13px] font-semibold uppercase tracking-wider text-[#8A8574] mb-3">
+                Latest activity
+              </h2>
+              <FeedCard feed={feed} />
+            </div>
+          )}
 
           {/* Download CTA - Moved to bottom area */}
           <div className="bg-white/80 backdrop-blur-sm rounded-3xl px-6 py-8 border border-[#14140F]/[0.06] shadow-[0_20px_40px_-30px_rgba(20,20,15,0.25)] text-center space-y-5">

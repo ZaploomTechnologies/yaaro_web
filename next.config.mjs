@@ -15,7 +15,7 @@ const nextConfig = {
       {
         protocol: 'http',
         hostname: 'localhost',
-        port: '3100',
+        port: '3200',
         pathname: '/**',
       },
       {
@@ -51,7 +51,7 @@ const nextConfig = {
     const backend = (
       process.env.BACKEND_ORIGIN ||
       process.env.NEXT_PUBLIC_BACKEND_ORIGIN ||
-      'http://127.0.0.1:3100'
+      'http://127.0.0.1:3200'
     ).replace(/\/$/, '');
     return [
       {

@@ -1,9 +1,16 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { NAV_LINKS } from '../constants';
+
+// Real routes (not in-page anchors) — navigated with the router, not snapjump.
+const PAGE_LINKS = [
+  { label: 'About', href: '/about' },
+  { label: 'Contact', href: '/contact' },
+];
 
 
 export default function Navbar() {
@@ -30,6 +37,10 @@ export default function Navbar() {
     window.dispatchEvent(new CustomEvent('yaaro:snapjump', { detail: { id: href.replace('#', '') } }));
   };
 
+  // Home first, then the standalone routes, then the remaining in-page anchors.
+  const [homeLink, ...anchorLinks] = NAV_LINKS;
+  const navItems = [homeLink, ...PAGE_LINKS, ...anchorLinks];
+
   return (
     <motion.nav
       initial={{ y: -80, opacity: 0 }}
@@ -43,44 +54,53 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div
-          className={`relative flex items-center transition-all duration-300 ${
-            scrolled ? 'h-14 justify-center' : 'h-16 md:h-18 justify-between'
+          className={`relative flex items-center justify-between transition-all duration-300 ${
+            scrolled ? 'h-14' : 'h-16 md:h-18'
           }`}
         >
-          {/* Logo */}
-          <a
-            href="#home"
-            onClick={(e) => handleNavClick(e, '#home')}
-            className="flex items-center gap-2 group"
-          >
-            <img
-              src="/Yaaro-Logo.png"
-              alt=""
-              width={92}
-              className="transition-all duration-300"
-            />
-          </a>
+          {/* Logo — shown only in the full (unscrolled) header */}
+          {!scrolled && (
+            <a
+              href="#home"
+              onClick={(e) => handleNavClick(e, '#home')}
+              className="flex items-center gap-2 group"
+            >
+              <img
+                src="/Yaaro-Logo.png"
+                alt=""
+                width={92}
+                className="transition-all duration-300"
+              />
+            </a>
+          )}
 
           {/* Desktop Nav — hidden once the header goes flat */}
           <div className={`items-center gap-1 ${scrolled ? 'hidden' : 'hidden md:flex'}`}>
-            {NAV_LINKS.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                onClick={(e) => handleNavClick(e, link.href)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                  activeLink === link.href
-                    ? onLightHero
-                      ? 'text-[#14140F] bg-white shadow-sm'
-                      : 'text-primary bg-primary/10'
-                    : onLightHero
-                      ? 'text-[#6E6A5D] hover:text-[#14140F] hover:bg-black/5'
-                      : 'text-surface-secondary hover:text-surface-text hover:bg-surface-card'
-                }`}
-              >
-                {link.label}
-              </a>
-            ))}
+            {navItems.map((link) => {
+              const cls = `px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                activeLink === link.href
+                  ? onLightHero
+                    ? 'text-[#14140F] bg-white shadow-sm'
+                    : 'text-primary bg-primary/10'
+                  : onLightHero
+                    ? 'text-[#6E6A5D] hover:text-[#14140F] hover:bg-black/5'
+                    : 'text-surface-secondary hover:text-surface-text hover:bg-surface-card'
+              }`;
+              return link.href.startsWith('/') ? (
+                <Link key={link.href} href={link.href} className={cls}>
+                  {link.label}
+                </Link>
+              ) : (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={(e) => handleNavClick(e, link.href)}
+                  className={cls}
+                >
+                  {link.label}
+                </a>
+              );
+            })}
           </div>
           {/* Menu button — on the home page it's mobile-only at every scroll
               position (desktop never gets a hamburger there); other pages
@@ -127,20 +147,32 @@ export default function Navbar() {
             }`}
           >
             <div className="px-4 py-4 space-y-1">
-              {NAV_LINKS.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  onClick={(e) => handleNavClick(e, link.href)}
-                  className={`block px-4 py-3 rounded-xl transition-all font-medium ${
-                    isHome
-                      ? 'text-[#6E6A5D] hover:text-[#14140F] hover:bg-black/5'
-                      : 'text-surface-secondary hover:text-surface-text hover:bg-surface-card'
-                  }`}
-                >
-                  {link.label}
-                </a>
-              ))}
+              {navItems.map((link) => {
+                const cls = `block px-4 py-3 rounded-xl transition-all font-medium ${
+                  isHome
+                    ? 'text-[#6E6A5D] hover:text-[#14140F] hover:bg-black/5'
+                    : 'text-surface-secondary hover:text-surface-text hover:bg-surface-card'
+                }`;
+                return link.href.startsWith('/') ? (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setMenuOpen(false)}
+                    className={cls}
+                  >
+                    {link.label}
+                  </Link>
+                ) : (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    onClick={(e) => handleNavClick(e, link.href)}
+                    className={cls}
+                  >
+                    {link.label}
+                  </a>
+                );
+              })}
             </div>
           </motion.div>
         )}
